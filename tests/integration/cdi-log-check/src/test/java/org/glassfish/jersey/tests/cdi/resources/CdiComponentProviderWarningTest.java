@@ -45,7 +45,6 @@ public class CdiComponentProviderWarningTest extends JerseyTest {
     @Override
     public void setUp() throws Exception {
         if (Hk2InjectionManagerFactory.isImmediateStrategy()) {
-            registerLogHandlerWhenEnabled();
             if (!ExternalTestContainerFactory.class.isAssignableFrom(getTestContainerFactory().getClass())) {
                 weld = new Weld();
                 weld.initialize();
