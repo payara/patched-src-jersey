@@ -50,7 +50,7 @@ public class CdiComponentProviderWarningTest extends JerseyTest {
                 weld = new Weld();
                 weld.initialize();
             }
-            super.setUp(false);
+            super.setUp();
         }
     }
 
