@@ -347,6 +347,11 @@ public final class EjbComponentProvider implements ComponentProvider, ResourceMe
                 allLocalOrRemoteIfaces.add(i);
             }
         }
+        if (allLocalOrRemoteIfaces.isEmpty()) {
+            for (Class<?> i : resourceClass.getInterfaces()) {
+                allLocalOrRemoteIfaces.add(i);
+            }
+        }
         return allLocalOrRemoteIfaces;
     }
 
