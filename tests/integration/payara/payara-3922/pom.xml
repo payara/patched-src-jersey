@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright [2019] [Payara Foundation and/or its affiliates] -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.glassfish.jersey.tests.integration</groupId>
+        <artifactId>payara</artifactId>
+        <version>2.29.payara-p4-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>payara-3922-3121</artifactId>
+    <name>jersey-tests-integration-payara-3922 and 3121 EAR+WARS+Stateless</name>
+    <packaging>jar</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.4.1.Final</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <!-- must have higher priority than what is inside payara-embedded-all -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers.glassfish</groupId>
+            <artifactId>jersey-gf-ejb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.extras</groupId>
+            <artifactId>payara-embedded-all</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.arquillian</groupId>
+            <artifactId>arquillian-payara-server-embedded</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>
+

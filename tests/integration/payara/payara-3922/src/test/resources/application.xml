@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/ http://xmlns.jcp.org/xml/ns/javaee/application_8.xsd"
+    version="8">
+    <display-name>payara-3922-ear</display-name>
+    <initialize-in-order>true</initialize-in-order>
+    <module id="payara-3121-1.war">
+        <web>
+            <web-uri>payara-3121-1.war</web-uri>
+            <context-root>/d1</context-root>
+        </web>
+    </module>
+    <module id="payara-3121-2.war">
+        <web>
+            <web-uri>payara-3121-2.war</web-uri>
+            <context-root>/d2</context-root>
+        </web>
+    </module>
+    <module id="payara-3922.war">
+        <web>
+            <web-uri>payara-3922.war</web-uri>
+            <context-root>/</context-root>
+        </web>
+    </module>
+    <library-directory>lib</library-directory>
+</application>

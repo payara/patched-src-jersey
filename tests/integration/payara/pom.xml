@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright [2019] [Payara Foundation and/or its affiliates] -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.glassfish.jersey.tests.integration</groupId>
+        <artifactId>project</artifactId>
+        <version>2.29.payara-p4-SNAPSHOT</version>
+    </parent>
+    <artifactId>payara</artifactId>
+    <packaging>pom</packaging>
+    <name>jersey-tests-integration-payara</name>
+
+    <modules>
+        <module>payara-3922</module>
+    </modules>
+
+    <properties>
+        <payara.port.base>5800</payara.port.base>
+        <payara.port.http>${payara.port.base}1</payara.port.http>
+        <payara.port.https>${payara.port.base}2</payara.port.https>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <systemPropertyVariables>
+                        <payara.port.base>${payara.port.base}</payara.port.base>
+                        <payara.port.http>${payara.port.http}</payara.port.http>
+                        <payara.port.https>${payara.port.https}</payara.port.https>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.glassfish.jersey.containers.glassfish</groupId>
+                <artifactId>jersey-gf-ejb</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-server</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.inject</groupId>
+                <artifactId>jersey-hk2</artifactId>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>fish.payara.extras</groupId>
+                <artifactId>payara-embedded-all</artifactId>
+                <version>${payara.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.ejb</groupId>
+                <artifactId>javax.ejb-api</artifactId>
+                <version>3.2.2</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.arquillian.junit</groupId>
+                <artifactId>arquillian-junit-container</artifactId>
+                <version>1.4.1.Final</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>fish.payara.arquillian</groupId>
+                <artifactId>arquillian-payara-server-embedded</artifactId>
+                <version>1.1</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
