@@ -17,6 +17,8 @@
 
 package org.glassfish.jersey.gf.ejb.internal;
 
+import java.io.Externalizable;
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -370,10 +372,19 @@ public final class EjbComponentProvider implements ComponentProvider, ResourceMe
         }
         if (allLocalOrRemoteIfaces.isEmpty()) {
             for (Class<?> i : resourceClass.getInterfaces()) {
-                allLocalOrRemoteIfaces.add(i);
+                if (isAccebtableLocalInterface(i)) {
+                    allLocalOrRemoteIfaces.add(i);
+                }
             }
         }
         return allLocalOrRemoteIfaces;
+    }
+
+    private static boolean isAccebtableLocalInterface(final Class<?> iface) {
+        if ("javax.ejb.".equals(iface.getPackage().getName())) {
+            return false;
+        }
+        return !Serializable.class.equals(iface) && !Externalizable.class.equals(iface);
     }
 
     private static InitialContext getInitialContext() {
