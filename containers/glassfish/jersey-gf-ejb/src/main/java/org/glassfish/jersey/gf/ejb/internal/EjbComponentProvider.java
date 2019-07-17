@@ -372,7 +372,7 @@ public final class EjbComponentProvider implements ComponentProvider, ResourceMe
         }
         if (allLocalOrRemoteIfaces.isEmpty()) {
             for (Class<?> i : resourceClass.getInterfaces()) {
-                if (isAccebtableLocalInterface(i)) {
+                if (isAcceptableLocalInterface(i)) {
                     allLocalOrRemoteIfaces.add(i);
                 }
             }
@@ -380,8 +380,8 @@ public final class EjbComponentProvider implements ComponentProvider, ResourceMe
         return allLocalOrRemoteIfaces;
     }
 
-    private static boolean isAccebtableLocalInterface(final Class<?> iface) {
-        if ("javax.ejb.".equals(iface.getPackage().getName())) {
+    private static boolean isAcceptableLocalInterface(final Class<?> iface) {
+        if ("javax.ejb".equals(iface.getPackage().getName())) {
             return false;
         }
         return !Serializable.class.equals(iface) && !Externalizable.class.equals(iface);
