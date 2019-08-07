@@ -53,9 +53,12 @@ public final class FormMultivaluedMapProvider extends AbstractFormProvider<Multi
 
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        // Only allow types MultivaluedMap<String, String> and MultivaluedMap.
-        return type == MultivaluedMap.class
-                && (type == genericType || mapType.equals(genericType));
+        if(type == MultivaluedMap.class || mapType.equals(genericType)){
+            return true;
+        }else if("java.util.Map".equals(type.getName()) || "java.util.Map".equals(genericType.getClass().getName())){
+            return true;
+        }
+        return false;
     }
 
     @Override
