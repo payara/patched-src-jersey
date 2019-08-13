@@ -401,7 +401,7 @@ public class ServerRuntime {
             processingContext.triggerEvent(RequestEvent.Type.ON_EXCEPTION);
 
             ContainerResponse response = null;
-                    try {
+            try {
                 final Response exceptionResponse = mapException(throwable);
                 try {
                     try {
