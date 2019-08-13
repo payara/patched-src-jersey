@@ -27,6 +27,7 @@ import javax.ws.rs.ext.WriterInterceptorContext;
 
 import javax.annotation.Priority;
 import javax.inject.Singleton;
+import javax.ws.rs.NotFoundException;
 
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.message.internal.MessageBodyProviderNotFoundException;

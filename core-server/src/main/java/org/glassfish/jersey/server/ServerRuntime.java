@@ -34,6 +34,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.AEADBadTagException;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.InternalServerErrorException;
@@ -51,6 +52,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import javax.inject.Provider;
+import javax.ws.rs.NotSupportedException;
 
 import org.glassfish.jersey.internal.guava.Preconditions;
 import org.glassfish.jersey.internal.inject.InjectionManager;
@@ -256,8 +258,8 @@ public class ServerRuntime {
                         responder.process(response);
                     } else {
                         externalRequestScope.suspend(asyncResponderHolder.externalContext, injectionManager);
-                    }
-                } catch (final Throwable throwable) {
+                    } 
+                } catch (NotFoundException throwable) {
                     responder.process(throwable);
                 } finally {
                     asyncResponderHolder.release();
@@ -399,7 +401,7 @@ public class ServerRuntime {
             processingContext.triggerEvent(RequestEvent.Type.ON_EXCEPTION);
 
             ContainerResponse response = null;
-            try {
+                    try {
                 final Response exceptionResponse = mapException(throwable);
                 try {
                     try {
