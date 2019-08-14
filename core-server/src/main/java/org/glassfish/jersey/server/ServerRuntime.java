@@ -257,8 +257,8 @@ public class ServerRuntime {
                     } else {
                         externalRequestScope.suspend(asyncResponderHolder.externalContext, injectionManager);
                     }
-                } catch (final Throwable throwable) {
-                    responder.process(throwable);
+                } catch (final Exception ex) {
+                    responder.process(ex);
                 } finally {
                     asyncResponderHolder.release();
                     // clear base URI from the thread
