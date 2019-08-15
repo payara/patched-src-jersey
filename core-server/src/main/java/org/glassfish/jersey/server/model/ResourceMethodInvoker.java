@@ -389,7 +389,7 @@ public class ResourceMethodInvoker implements Endpoint, ResourceInfo {
         } else {
             // TODO replace with processing context factory method.
             Response response = invoke(processingContext, resource);
-            
+
             // we don't care about the response when SseEventSink is injected - it will be sent asynchronously.
             if (method.isSse()) {
                 return null;
@@ -477,7 +477,7 @@ public class ResourceMethodInvoker implements Endpoint, ResourceInfo {
 
         return jaxrsResponse;
     }
-    
+
     /**
      * Get all bound request filters applicable to the {@link #getResourceMethod() resource method}
      * wrapped by this invoker.
