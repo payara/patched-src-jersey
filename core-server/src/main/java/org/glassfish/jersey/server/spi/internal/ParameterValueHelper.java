@@ -73,7 +73,7 @@ public final class ParameterValueHelper {
         } catch (WebApplicationException e) {
             throw e;
         } catch (MessageBodyProviderNotFoundException e) {
-            throw new NotFoundException(e);
+            throw new NotSupportedException(e);
         } catch (ProcessingException e) {
             throw e;
         } catch (RuntimeException e) {

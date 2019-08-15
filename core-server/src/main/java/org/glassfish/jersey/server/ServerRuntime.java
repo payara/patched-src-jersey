@@ -256,6 +256,7 @@ public class ServerRuntime {
                         responder.process(response);
                     } else {
                         externalRequestScope.suspend(asyncResponderHolder.externalContext, injectionManager);
+
                     }
                 } catch (final Exception ex) {
                     responder.process(ex);
