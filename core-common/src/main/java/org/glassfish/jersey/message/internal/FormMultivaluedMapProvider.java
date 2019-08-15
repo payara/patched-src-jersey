@@ -27,7 +27,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
-import java.util.Map;
 
 import javax.inject.Singleton;
 
@@ -54,11 +53,9 @@ public final class FormMultivaluedMapProvider extends AbstractFormProvider<Multi
 
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return (type == MultivaluedMap.class 
-                && (type == genericType 
-                || mapType.equals(genericType))) 
-                || (type.isAssignableFrom(MultivaluedMap.class)
-                && mediaType.isCompatible(MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+        // Only allow types MultivaluedMap<String, String> and MultivaluedMap.
+        return type == MultivaluedMap.class
+                && (type == genericType || mapType.equals(genericType));
     }
 
     @Override

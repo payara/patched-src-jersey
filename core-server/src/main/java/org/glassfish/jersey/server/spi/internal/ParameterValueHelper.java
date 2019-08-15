@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.ws.rs.NotFoundException;
 
 import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.ProcessingException;
@@ -73,7 +72,7 @@ public final class ParameterValueHelper {
         } catch (WebApplicationException e) {
             throw e;
         } catch (MessageBodyProviderNotFoundException e) {
-            throw new NotFoundException(e);
+            throw new NotSupportedException(e);
         } catch (ProcessingException e) {
             throw e;
         } catch (RuntimeException e) {

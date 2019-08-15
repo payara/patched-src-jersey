@@ -51,7 +51,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import javax.inject.Provider;
-import javax.ws.rs.NotSupportedException;
 
 import org.glassfish.jersey.internal.guava.Preconditions;
 import org.glassfish.jersey.internal.inject.InjectionManager;
@@ -257,8 +256,8 @@ public class ServerRuntime {
                         responder.process(response);
                     } else {
                         externalRequestScope.suspend(asyncResponderHolder.externalContext, injectionManager);
-                    } 
-                } catch (final NotFoundException throwable) {
+                    }
+                } catch (final Throwable throwable) {
                     responder.process(throwable);
                 } finally {
                     asyncResponderHolder.release();
