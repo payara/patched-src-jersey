@@ -164,7 +164,7 @@ public final class AnnotationAcceptingListener implements ResourceProcessor {
         private boolean isAnnotated;
 
         private AnnotatedClassVisitor() {
-            super(Opcodes.ASM5);
+            super(Opcodes.ASM7);
         }
 
         public void visit(final int version, final int access, final String name,
