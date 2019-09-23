@@ -69,8 +69,8 @@ public class JerseyClient implements javax.ws.rs.client.Client, Initializable<Je
     private final HostnameVerifier hostnameVerifier;
     private final UnsafeValue<SSLContext, IllegalStateException> sslContext;
     private final LinkedBlockingDeque<WeakReference<JerseyClient.ShutdownHook>> shutdownHooks =
-                                        new LinkedBlockingDeque<WeakReference<JerseyClient.ShutdownHook>>();
-    private final ReferenceQueue<JerseyClient.ShutdownHook> shReferenceQueue = new ReferenceQueue<JerseyClient.ShutdownHook>();
+                                        new LinkedBlockingDeque<>();
+    private final ReferenceQueue<JerseyClient.ShutdownHook> shReferenceQueue = new ReferenceQueue<>();
 
     /**
      * Client instance shutdown hook.
@@ -79,7 +79,7 @@ public class JerseyClient implements javax.ws.rs.client.Client, Initializable<Je
         /**
          * Invoked when the client instance is closed.
          */
-        public void onShutdown();
+        void onShutdown();
     }
 
     /**
@@ -211,7 +211,7 @@ public class JerseyClient implements javax.ws.rs.client.Client, Initializable<Je
      */
     /* package */ void registerShutdownHook(final ShutdownHook shutdownHook) {
         checkNotClosed();
-        shutdownHooks.push(new WeakReference<JerseyClient.ShutdownHook>(shutdownHook, shReferenceQueue));
+        shutdownHooks.push(new WeakReference<>(shutdownHook, shReferenceQueue));
         cleanUpShutdownHooks();
     }
 
@@ -271,37 +271,48 @@ public class JerseyClient implements javax.ws.rs.client.Client, Initializable<Je
     public JerseyWebTarget target(final String uri) {
         checkNotClosed();
         checkNotNull(uri, LocalizationMessages.CLIENT_URI_TEMPLATE_NULL());
-        return new JerseyWebTarget(uri, this);
+        return createWebTarget(UriBuilder.fromUri(uri));
     }
 
     @Override
     public JerseyWebTarget target(final URI uri) {
         checkNotClosed();
         checkNotNull(uri, LocalizationMessages.CLIENT_URI_NULL());
-        return new JerseyWebTarget(uri, this);
+        return createWebTarget(UriBuilder.fromUri(uri));
     }
 
     @Override
     public JerseyWebTarget target(final UriBuilder uriBuilder) {
         checkNotClosed();
         checkNotNull(uriBuilder, LocalizationMessages.CLIENT_URI_BUILDER_NULL());
-        return new JerseyWebTarget(uriBuilder, this);
+        return createWebTarget(uriBuilder);
     }
 
     @Override
     public JerseyWebTarget target(final Link link) {
         checkNotClosed();
         checkNotNull(link, LocalizationMessages.CLIENT_TARGET_LINK_NULL());
-        return new JerseyWebTarget(link, this);
+        return createWebTarget(link.getUriBuilder());
     }
 
     @Override
     public JerseyInvocation.Builder invocation(final Link link) {
         checkNotClosed();
         checkNotNull(link, LocalizationMessages.CLIENT_INVOCATION_LINK_NULL());
-        final JerseyWebTarget t = new JerseyWebTarget(link, this);
+        final JerseyWebTarget t = createWebTarget(link.getUriBuilder());
         final String acceptType = link.getType();
         return (acceptType != null) ? t.request(acceptType) : t.request();
+    }
+
+    /**
+     * Creates a new web target for the uri builder.
+     * This method is used by all methods creating new web targets in this class.
+     *
+     * @param uriBuilder
+     * @return new instance.
+     */
+    protected JerseyWebTarget createWebTarget(final UriBuilder uriBuilder) {
+        return new JerseyWebTarget(uriBuilder, getConfiguration());
     }
 
     @Override

@@ -565,7 +565,7 @@ public class ClientConfig implements Configurable<ClientConfig>, ExtendedConfig 
      *
      * @return snapshot of the current configuration.
      */
-    ClientConfig snapshot() {
+    public ClientConfig snapshot() {
         state.markAsShared();
         return new ClientConfig(state);
     }

@@ -68,10 +68,19 @@ public class JerseyClientBuilder extends ClientBuilder {
     }
 
     /**
-     * Create new Jersey client builder instance.
+     * Create new Jersey client builder instance and generate default configuration.
      */
     public JerseyClientBuilder() {
         this.config = new ClientConfig();
+    }
+
+    /**
+     * Create new Jersey client builder instance.
+     *
+     * @param config provided configuration
+     */
+    public JerseyClientBuilder(final ClientConfig config) {
+        this.config = config;
     }
 
     @Override
@@ -155,21 +164,27 @@ public class JerseyClientBuilder extends ClientBuilder {
     @Override
     public JerseyClient build() {
         if (sslContext != null) {
-            return new JerseyClient(config, sslContext, hostnameVerifier, null);
+            return createClient(sslContext == null ? null : Values.unsafe(sslContext), hostnameVerifier);
         } else if (sslConfigurator != null) {
             final SslConfigurator sslConfiguratorCopy = sslConfigurator.copy();
-            return new JerseyClient(
-                    config,
-                    Values.lazy(new UnsafeValue<SSLContext, IllegalStateException>() {
-                        @Override
-                        public SSLContext get() {
-                            return sslConfiguratorCopy.createSSLContext();
-                        }
-                    }),
-                    hostnameVerifier);
+            final UnsafeValue<SSLContext, IllegalStateException> sslCtxProvider = sslConfiguratorCopy::createSSLContext;
+            return createClient(Values.lazy(sslCtxProvider), hostnameVerifier);
         } else {
-            return new JerseyClient(config, (UnsafeValue<SSLContext, IllegalStateException>) null, hostnameVerifier);
+            return createClient(null, hostnameVerifier);
         }
+    }
+
+    /**
+     * Creates new client instance.
+     * This method is used by this builder to build the client in all variants.
+     *
+     * @param sslContextProvider nullable provider of the {@link SSLContext}
+     * @param verifier nullable {@link HostnameVerifier}
+     * @return new {@link JerseyClient} instance.
+     */
+    protected JerseyClient createClient(final UnsafeValue<SSLContext, IllegalStateException> sslContextProvider,
+        final HostnameVerifier verifier) {
+        return new JerseyClient(getConfiguration(), sslContextProvider, verifier, null);
     }
 
     @Override

@@ -43,7 +43,6 @@ import javax.ws.rs.ServiceUnavailableException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.CompletionStageRxInvoker;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.InvocationCallback;
 import javax.ws.rs.client.ResponseProcessingException;
 import javax.ws.rs.client.RxInvoker;
@@ -151,6 +150,15 @@ public class JerseyInvocation implements javax.ws.rs.client.Invocation {
         /**
          * Create new Jersey-specific client invocation builder.
          *
+         * @param clientRequest Jersey client request context
+         */
+        protected Builder(final ClientRequest clientRequest) {
+            this.requestContext = clientRequest;
+        }
+
+        /**
+         * Create new Jersey-specific client invocation builder.
+         *
          * @param uri           invoked request URI.
          * @param configuration Jersey client configuration.
          */
@@ -232,7 +240,7 @@ public class JerseyInvocation implements javax.ws.rs.client.Invocation {
         }
 
         @Override
-        public Invocation.Builder acceptEncoding(final String... encodings) {
+        public Builder acceptEncoding(final String... encodings) {
             requestContext.getHeaders().addAll(HttpHeaders.ACCEPT_ENCODING, (Object[]) encodings);
             return this;
         }
@@ -718,7 +726,17 @@ public class JerseyInvocation implements javax.ws.rs.client.Invocation {
     }
 
     private ClientRequest requestForCall(final ClientRequest requestContext) {
-        return copyRequestContext ? new ClientRequest(requestContext) : requestContext;
+        return copyRequestContext ? copyRequestContext(requestContext) : requestContext;
+    }
+
+    /**
+     * Creates new request context instance with the same attributes.
+     *
+     * @param requestContext
+     * @return copy of the request context
+     */
+    protected ClientRequest copyRequestContext(final ClientRequest requestContext) {
+        return new ClientRequest(requestContext);
     }
 
     @Override

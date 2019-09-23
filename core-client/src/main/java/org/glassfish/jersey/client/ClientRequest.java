@@ -92,7 +92,7 @@ public class ClientRequest extends OutboundMessageContext implements ClientReque
      * @param clientConfig      request configuration.
      * @param propertiesDelegate properties delegate.
      */
-    protected ClientRequest(
+    public ClientRequest(
             final URI requestUri, final ClientConfig clientConfig, final PropertiesDelegate propertiesDelegate) {
         clientConfig.checkClient();
 

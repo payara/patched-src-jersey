@@ -26,7 +26,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.internal.guava.Preconditions;
-import org.glassfish.jersey.internal.inject.InjectionManager;
 
 /**
  * Jersey implementation of {@link javax.ws.rs.client.WebTarget JAX-RS client target}
@@ -103,6 +102,16 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         this.config = clientConfig.snapshot();
     }
 
+    /**
+     * Creates new target instance using a snapshot of the current configuration.
+     *
+     * @param uriBuilder builder for the target URI.
+     * @return web target for the URI referenced by the builder.
+     */
+    protected JerseyWebTarget createSubTarget(final UriBuilder uriBuilder) {
+        return new JerseyWebTarget(uriBuilder, getConfiguration());
+    }
+
     @Override
     public URI getUri() {
         checkNotClosed();
@@ -113,6 +122,9 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         }
     }
 
+    /**
+     * @throws IllegalStateException if the client is closed.
+     */
     private void checkNotClosed() {
         config.getClient().checkNotClosed();
     }
@@ -128,7 +140,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         checkNotClosed();
         Preconditions.checkNotNull(path, "path is 'null'.");
 
-        return new JerseyWebTarget(getUriBuilder().path(path), this);
+        return createSubTarget(getUriBuilder().path(path));
     }
 
     @Override
@@ -137,17 +149,17 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         Preconditions.checkNotNull(name, "Matrix parameter name must not be 'null'.");
 
         if (values == null || values.length == 0 || (values.length == 1 && values[0] == null)) {
-            return new JerseyWebTarget(getUriBuilder().replaceMatrixParam(name, (Object[]) null), this);
+            return createSubTarget(getUriBuilder().replaceMatrixParam(name, (Object[]) null));
         }
 
         checkForNullValues(name, values);
-        return new JerseyWebTarget(getUriBuilder().matrixParam(name, values), this);
+        return createSubTarget(getUriBuilder().matrixParam(name, values));
     }
 
     @Override
     public JerseyWebTarget queryParam(String name, Object... values) throws NullPointerException {
         checkNotClosed();
-        return new JerseyWebTarget(JerseyWebTarget.setQueryParam(getUriBuilder(), name, values), this);
+        return createSubTarget(JerseyWebTarget.setQueryParam(getUriBuilder(), name, values));
     }
 
     private static UriBuilder setQueryParam(UriBuilder uriBuilder, String name, Object[] values) {
@@ -162,7 +174,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
     private static void checkForNullValues(String name, Object[] values) {
         Preconditions.checkNotNull(name, "name is 'null'.");
 
-        List<Integer> indexes = new LinkedList<Integer>();
+        List<Integer> indexes = new LinkedList<>();
         for (int i = 0; i < values.length; i++) {
             if (values[i] == null) {
                 indexes.add(i);
@@ -219,7 +231,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         Preconditions.checkNotNull(name, "name is 'null'.");
         Preconditions.checkNotNull(value, "value is 'null'.");
 
-        return new JerseyWebTarget(getUriBuilder().resolveTemplate(name, value, encodeSlashInPath), this);
+        return createSubTarget(getUriBuilder().resolveTemplate(name, value, encodeSlashInPath));
     }
 
     @Override
@@ -229,7 +241,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         Preconditions.checkNotNull(name, "name is 'null'.");
         Preconditions.checkNotNull(value, "value is 'null'.");
 
-        return new JerseyWebTarget(getUriBuilder().resolveTemplateFromEncoded(name, value), this);
+        return createSubTarget(getUriBuilder().resolveTemplateFromEncoded(name, value));
     }
 
     @Override
@@ -246,7 +258,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         if (templateValues.isEmpty()) {
             return this;
         } else {
-            return new JerseyWebTarget(getUriBuilder().resolveTemplates(templateValues, encodeSlashInPath), this);
+            return createSubTarget(getUriBuilder().resolveTemplates(templateValues, encodeSlashInPath));
         }
     }
 
@@ -259,7 +271,7 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
         if (templateValues.isEmpty()) {
             return this;
         } else {
-            return new JerseyWebTarget(getUriBuilder().resolveTemplatesFromEncoded(templateValues), this);
+            return createSubTarget(getUriBuilder().resolveTemplatesFromEncoded(templateValues));
         }
     }
 
@@ -357,6 +369,6 @@ public class JerseyWebTarget implements javax.ws.rs.client.WebTarget, Initializa
 
     @Override
     public String toString() {
-        return "JerseyWebTarget { " + targetUri.toTemplate() + " }";
+        return getClass().getSimpleName() + "{ " + targetUri.toTemplate() + " }";
     }
 }
