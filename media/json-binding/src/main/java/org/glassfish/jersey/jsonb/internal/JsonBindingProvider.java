@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, 2019 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2017, 2020 Oracle and/or its affiliates and others.
+ * All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -12,6 +13,9 @@
  * https://www.gnu.org/software/classpath/license.html.
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
+ *
+ * Contributors:
+ *  Payara Services - Prevent parsing null streams
  */
 
 package org.glassfish.jersey.jsonb.internal;
@@ -70,6 +74,9 @@ public class JsonBindingProvider extends AbstractMessageReaderWriterProvider<Obj
                            MediaType mediaType,
                            MultivaluedMap<String, String> httpHeaders,
                            InputStream entityStream) throws IOException, WebApplicationException {
+        if (entityStream.available() == 0) {
+            return null;
+        }
         Jsonb jsonb = getJsonb(type);
         try {
             return jsonb.fromJson(entityStream, genericType);
