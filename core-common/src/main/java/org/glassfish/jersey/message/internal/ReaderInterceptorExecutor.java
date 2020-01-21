@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2012, 2019 Oracle and/or its affiliates and others.
- * All rights reserved.
+ * Copyright (c) 2012, 2019 Oracle and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -13,9 +12,6 @@
  * https://www.gnu.org/software/classpath/license.html.
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
- *
- * Contributors:
- *  Payara Services - Prevent parsing in case of null entity
  */
 
 package org.glassfish.jersey.message.internal;
@@ -194,24 +190,24 @@ public final class ReaderInterceptorExecutor extends InterceptorExecutor<ReaderI
                             String.valueOf(context.getMediaType()), java.util.Arrays.toString(context.getAnnotations()));
                 }
 
-                final EntityInputStream input = new EntityInputStream(context.getInputStream());
-
-                if (input.isEmpty()) {
-                    return null;
-                }
-
-                final MessageBodyReader<?> bodyReader = workers.getMessageBodyReader(
+                final MessageBodyReader bodyReader = workers.getMessageBodyReader(
                         context.getType(),
                         context.getGenericType(),
                         context.getAnnotations(),
                         context.getMediaType(),
                         ReaderInterceptorExecutor.this);
 
+                final EntityInputStream input = new EntityInputStream(context.getInputStream());
+
                 if (bodyReader == null) {
-                    LOGGER.log(Level.FINE, LocalizationMessages.ERROR_NOTFOUND_MESSAGEBODYREADER(context.getMediaType(),
-                            context.getType(), context.getGenericType()));
-                    throw new MessageBodyProviderNotFoundException(LocalizationMessages.ERROR_NOTFOUND_MESSAGEBODYREADER(
-                            context.getMediaType(), context.getType(), context.getGenericType()));
+                    if (input.isEmpty() && !context.getHeaders().containsKey(HttpHeaders.CONTENT_TYPE)) {
+                        return null;
+                    } else {
+                        LOGGER.log(Level.FINE, LocalizationMessages.ERROR_NOTFOUND_MESSAGEBODYREADER(context.getMediaType(),
+                                context.getType(), context.getGenericType()));
+                        throw new MessageBodyProviderNotFoundException(LocalizationMessages.ERROR_NOTFOUND_MESSAGEBODYREADER(
+                                context.getMediaType(), context.getType(), context.getGenericType()));
+                    }
                 }
                 Object entity = invokeReadFrom(context, bodyReader, input);
 
