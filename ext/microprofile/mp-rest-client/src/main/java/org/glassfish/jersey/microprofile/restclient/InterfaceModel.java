@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2019 Oracle and/or its affiliates. All rights reserved.
- * Copyright (c) 2019 Payara Foundation and/or its affiliates. All rights reserved.
+ * Copyright (c) 2019-2020 Payara Foundation and/or its affiliates. All rights reserved.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0, which is available at
@@ -17,23 +17,6 @@
 
 package org.glassfish.jersey.microprofile.restclient;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.BeanManager;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.ext.ParamConverterProvider;
-
 import org.eclipse.microprofile.rest.client.RestClientDefinitionException;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
@@ -46,6 +29,23 @@ import org.glassfish.jersey.client.inject.ParameterUpdaterProvider;
 import org.glassfish.jersey.internal.inject.InjectionManager;
 import org.glassfish.jersey.internal.inject.Providers;
 import org.glassfish.jersey.model.Parameter;
+
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ParamConverterProvider;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Model of interface and its annotation.
@@ -337,9 +337,18 @@ class InterfaceModel {
 
         Builder clientHeadersFactory(RegisterClientHeaders registerClientHeaders) {
             clientHeadersFactory = registerClientHeaders != null
-                    ? ReflectionUtil.createInstance(registerClientHeaders.value())
+                    ? initialiseClientHeadersFactory(registerClientHeaders)
                     : null;
             return this;
+        }
+
+        private ClientHeadersFactory initialiseClientHeadersFactory(RegisterClientHeaders annotation) {
+            if (beanManager != null) {
+                Bean<?> bean = beanManager.resolve(beanManager.getBeans(annotation.value()));
+                CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
+                return (ClientHeadersFactory) beanManager.getReference(bean, bean.getBeanClass(), ctx);
+            }
+            return ReflectionUtil.createInstance(annotation.value());
         }
 
         /**
