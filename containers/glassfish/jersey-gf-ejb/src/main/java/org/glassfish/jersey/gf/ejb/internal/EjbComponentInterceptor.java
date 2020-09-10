@@ -30,21 +30,30 @@ import org.glassfish.jersey.internal.inject.InjectionManager;
 public final class EjbComponentInterceptor {
 
     private final InjectionManager injectionManager;
+    private final boolean useCDI;
+
+    private static final String JERSEY_ANALYZER = "JerseyClassAnalyzer";
 
     /**
      * Create new EJB component injection manager.
      *
      * @param injectionManager injection manager.
+     * @param useCDI If CDI is used for class analysis and injection
      */
-    public EjbComponentInterceptor(final InjectionManager injectionManager) {
+    public EjbComponentInterceptor(final InjectionManager injectionManager, boolean useCDI) {
         this.injectionManager = injectionManager;
+        this.useCDI = useCDI;
     }
 
     @PostConstruct
     private void inject(final InvocationContext context) throws Exception {
 
         final Object beanInstance = context.getTarget();
-        injectionManager.inject(beanInstance, CdiComponentProvider.CDI_CLASS_ANALYZER);
+        if (useCDI) {
+            injectionManager.inject(beanInstance, CdiComponentProvider.CDI_CLASS_ANALYZER);
+        } else {
+            injectionManager.inject(beanInstance, JERSEY_ANALYZER);
+        }
 
         // Invoke next interceptor in chain
         context.proceed();
