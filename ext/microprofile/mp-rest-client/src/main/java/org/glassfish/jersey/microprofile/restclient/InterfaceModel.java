@@ -343,10 +343,14 @@ class InterfaceModel {
         }
 
         private ClientHeadersFactory initialiseClientHeadersFactory(RegisterClientHeaders annotation) {
+            //CDI is in use
             if (beanManager != null) {
                 Bean<?> bean = beanManager.resolve(beanManager.getBeans(annotation.value()));
-                CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
-                return (ClientHeadersFactory) beanManager.getReference(bean, bean.getBeanClass(), ctx);
+                //Client Header is a CDI bean
+                if (bean != null) {
+                    CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
+                    return (ClientHeadersFactory) beanManager.getReference(bean, bean.getBeanClass(), ctx);
+                }
             }
             return ReflectionUtil.createInstance(annotation.value());
         }
