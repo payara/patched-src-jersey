@@ -27,7 +27,7 @@
 
     <modules>
         <module>war-bundle</module>
-        <module>functional-test</module>
+        <!-- <module>functional-test</module> -->
         <module>lib-bundle</module>
         <module>additional-bundle</module>
         <module>alternate-version-bundle</module>
