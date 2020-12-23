@@ -40,10 +40,10 @@ import org.glassfish.jersey.internal.util.collection.Values;
  */
 public class JerseyClientBuilder extends ClientBuilder {
 
-    private final ClientConfig config;
-    private HostnameVerifier hostnameVerifier;
-    private SslConfigurator sslConfigurator;
-    private SSLContext sslContext;
+    protected final ClientConfig config;
+    protected HostnameVerifier hostnameVerifier;
+    protected SslConfigurator sslConfigurator;
+    protected SSLContext sslContext;
 
     /**
      * Create a new custom-configured {@link JerseyClient} instance.

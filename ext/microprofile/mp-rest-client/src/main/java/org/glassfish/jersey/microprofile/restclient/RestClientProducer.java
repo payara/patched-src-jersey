@@ -55,8 +55,10 @@ import javax.net.ssl.HostnameVerifier;
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
+import org.eclipse.microprofile.rest.client.ext.QueryParamStyle;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.internal.util.ReflectionHelper;
 
 /**
@@ -83,6 +85,9 @@ class RestClientProducer implements Bean<Object>, PassivationCapable {
     private static final String CONFIG_SSL_KEY_STORE_PASSWORD = "/mp-rest/keyStorePassword";
     private static final String CONFIG_SSL_HOSTNAME_VERIFIER = "/mp-rest/hostnameVerifier";
     private static final String CONFIG_PROVIDERS = "/mp-rest/providers";
+    private static final String CONFIG_FOLLOW_REDIRECTS = "/mp-rest/followRedirects";
+    private static final String CONFIG_QUERY_PARAM_STYLE = "/mp-rest/queryParamStyle";
+    private static final String CONFIG_PROXY_ADDRESS = "/mp-rest/proxyAddress";
     private static final String DEFAULT_KEYSTORE_TYPE = "JKS";
     private static final String CLASSPATH_LOCATION = "classpath:";
     private static final String FILE_LOCATION = "file:";
@@ -134,6 +139,13 @@ class RestClientProducer implements Bean<Object>, PassivationCapable {
         // Connection read timeout (if configured)
         getConfigOption(Long.class, CONFIG_READ_TIMEOUT)
                 .ifPresent(aLong -> restClientBuilder.readTimeout(aLong, TimeUnit.MILLISECONDS));
+
+        getConfigOption(Boolean.class, CONFIG_FOLLOW_REDIRECTS)
+                .ifPresent(value -> restClientBuilder.followRedirects(value));
+        getConfigOption(String.class, CONFIG_QUERY_PARAM_STYLE)
+                .ifPresent(value -> restClientBuilder.queryParamStyle(QueryParamStyle.valueOf(value)));
+        getConfigOption(String.class, CONFIG_PROXY_ADDRESS)
+                .ifPresent(value -> restClientBuilder.getConfiguration().getProperties().put(ClientProperties.PROXY_URI, value));
 
         // Providers from configuration
         addConfiguredProviders(restClientBuilder);
