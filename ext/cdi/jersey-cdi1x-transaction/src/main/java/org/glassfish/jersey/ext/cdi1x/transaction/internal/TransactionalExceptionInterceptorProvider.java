@@ -44,7 +44,7 @@ import org.glassfish.jersey.ext.cdi1x.internal.GenericCdiBeanSupplier;
 import org.glassfish.jersey.internal.inject.Binding;
 import org.glassfish.jersey.internal.inject.Bindings;
 import org.glassfish.jersey.internal.inject.InjectionManager;
-import org.glassfish.jersey.server.spi.ComponentProvider;
+import org.glassfish.jersey.server.spi.ServerComponentProvider;
 
 /**
  * Jersey CDI extension that provides means to retain {@link WebApplicationException}
@@ -56,7 +56,7 @@ import org.glassfish.jersey.server.spi.ComponentProvider;
  * @author Jakub Podlesak
  */
 @Priority(value = Interceptor.Priority.PLATFORM_BEFORE + 199)
-public class TransactionalExceptionInterceptorProvider implements ComponentProvider, Extension {
+public class TransactionalExceptionInterceptorProvider implements ServerComponentProvider, Extension {
 
     private InjectionManager injectionManager;
     private BeanManager beanManager;

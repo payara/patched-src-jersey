@@ -39,7 +39,7 @@ import org.glassfish.jersey.server.internal.LocalizationMessages;
 import org.glassfish.jersey.server.model.ModelProcessor;
 import org.glassfish.jersey.server.model.Resource;
 import org.glassfish.jersey.server.model.ResourceModel;
-import org.glassfish.jersey.server.spi.ComponentProvider;
+import org.glassfish.jersey.spi.ComponentProvider;
 
 /**
  * Configurator which binds providers and resources into {@link InjectionManager}.

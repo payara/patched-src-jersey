@@ -14,7 +14,7 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
-package org.glassfish.jersey.server.spi;
+package org.glassfish.jersey.spi;
 
 import java.util.Set;
 
@@ -25,7 +25,7 @@ import org.glassfish.jersey.internal.inject.InjectionManager;
  * components life-cycle and dependency injection.
  * <p />
  * An implementation (a component-provider) identifies itself by placing a provider-configuration
- * file (if not already present), {@code org.glassfish.jersey.server.spi.ComponentProvider}
+ * file (if not already present), {@code org.glassfish.jersey.spi.ComponentProvider}
  * in the resource directory <tt>META-INF/services</tt>, and adding the fully
  * qualified service-provider-class of the implementation in the file.
  *

@@ -26,9 +26,9 @@ import org.glassfish.jersey.internal.ServiceFinder;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.internal.inject.InjectionManager;
 import org.glassfish.jersey.server.internal.LocalizationMessages;
-import org.glassfish.jersey.server.spi.ComponentProvider;
 import org.glassfish.jersey.server.spi.ExternalRequestContext;
 import org.glassfish.jersey.server.spi.ExternalRequestScope;
+import org.glassfish.jersey.spi.ComponentProvider;
 
 /**
  * Configurator which initializes and register {@link ExternalRequestScope} instance into {@link InjectionManager}.

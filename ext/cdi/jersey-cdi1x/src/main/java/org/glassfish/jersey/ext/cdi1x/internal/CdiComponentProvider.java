@@ -85,7 +85,6 @@ import org.glassfish.jersey.internal.util.collection.Cache;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.model.Parameter;
 import org.glassfish.jersey.server.model.Resource;
-import org.glassfish.jersey.server.spi.ComponentProvider;
 import org.glassfish.jersey.server.spi.internal.ValueParamProvider;
 
 import org.glassfish.hk2.api.ClassAnalyzer;
@@ -95,10 +94,12 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import org.glassfish.jersey.client.spi.ClientComponentProvider;
+import org.glassfish.jersey.server.spi.ServerComponentProvider;
 
 /**
  * Jersey CDI integration implementation.
- * Implements {@link ComponentProvider Jersey component provider} to serve CDI beans
+ * Implements {@link ServerComponentProvider Jersey component provider} to serve CDI beans
  * obtained from the actual CDI bean manager.
  * To properly inject JAX-RS/Jersey managed beans into CDI, it also
  * serves as a {@link Extension CDI Extension}, that intercepts CDI injection targets.
@@ -106,7 +107,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * @author Jakub Podlesak
  */
 @Priority(200)
-public class CdiComponentProvider implements ComponentProvider, Extension {
+public class CdiComponentProvider implements ServerComponentProvider, ClientComponentProvider, Extension {
 
     private static final Logger LOGGER = Logger.getLogger(CdiComponentProvider.class.getName());
 

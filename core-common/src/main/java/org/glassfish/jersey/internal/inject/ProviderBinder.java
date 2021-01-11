@@ -27,13 +27,16 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toSet;
 
 import javax.ws.rs.RuntimeType;
 
 import javax.inject.Singleton;
+import org.glassfish.jersey.internal.BootstrapBag;
 
 import org.glassfish.jersey.model.ContractProvider;
 import org.glassfish.jersey.model.internal.ComponentBag;
+import org.glassfish.jersey.spi.ComponentProvider;
 
 /**
  * Class used for registration of the custom providers into injection manager.
@@ -185,23 +188,29 @@ public class ProviderBinder {
      * Bind all providers contained in {@code providerBag} (classes and instances) using injection manager. Configuration is
      * also committed.
      *
+     * @param bootstrapBag     bootstrap bag with services used in following processing.
      * @param componentBag     bag of provider classes and instances.
      * @param injectionManager injection manager the binder will use to bind the providers into.
      */
-    public static void bindProviders(final ComponentBag componentBag, final InjectionManager injectionManager) {
-        bindProviders(componentBag, null, Collections.emptySet(), injectionManager);
+    public static void bindProviders(
+            final BootstrapBag bootstrapBag,
+            final ComponentBag componentBag,
+            final InjectionManager injectionManager) {
+        bindProviders(bootstrapBag, componentBag, null, Collections.emptySet(), injectionManager);
     }
 
     /**
      * Bind all providers contained in {@code providerBag} (classes and instances) using injection manager. Configuration is
      * also committed.
      *
+     * @param bootstrapBag      bootstrap bag with services used in following processing.
      * @param componentBag      bag of provider classes and instances.
      * @param constrainedTo     current runtime (client or server).
      * @param registeredClasses classes which are manually registered by the user (not found by the classpath scanning).
      * @param injectionManager  injection manager the binder will use to bind the providers into.
      */
-    public static void bindProviders(ComponentBag componentBag,
+    public static void bindProviders(BootstrapBag bootstrapBag,
+                                     ComponentBag componentBag,
                                      RuntimeType constrainedTo,
                                      Set<Class<?>> registeredClasses,
                                      InjectionManager injectionManager) {
@@ -233,8 +242,17 @@ public class ProviderBinder {
                     .collect(Collectors.toSet());
         }
         for (final Class<?> providerClass : classes) {
-            final ContractProvider model = componentBag.getModel(providerClass);
-            binderToRegister.addAll(createProviderBinders(providerClass, model));
+            Collection<ComponentProvider> componentProviders = bootstrapBag.getComponentProviders().get();
+            boolean registered = false;
+            for (ComponentProvider provider : componentProviders) {
+                if (provider.bind(providerClass, Arrays.stream(providerClass.getInterfaces()).collect(toSet()))) {
+                    registered = true;
+                }
+            }
+            if (!registered) {
+                final ContractProvider model = componentBag.getModel(providerClass);
+                binderToRegister.addAll(createProviderBinders(providerClass, model));
+            }
         }
 
         // Bind provider instances except for pure meta-providers and providers with empty contract models (e.g. resources)
