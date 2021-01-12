@@ -101,7 +101,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
     private QueryParamStyle queryParamStyle;
     private String proxyHost;
     private int proxyPort;
-    private Boolean followRedirects;
+    private boolean followRedirects;
 
     RestClientBuilderImpl() {
         clientBuilder = new JerseyRestClientBuilder();
@@ -199,9 +199,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
             ((Initializable) client).preInitialize();
         }
         WebTarget webTarget = client.target(this.uri);
-        if (followRedirects != null) {
-            webTarget.property(ClientProperties.FOLLOW_REDIRECTS, followRedirects);
-        }
+        webTarget.property(ClientProperties.FOLLOW_REDIRECTS, followRedirects);
 
         if (proxyHost != null) {
             webTarget.property(ClientProperties.PROXY_URI, "http://" + proxyHost + ":" + proxyPort);
