@@ -99,8 +99,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
     private char[] sslKeyStorePassword;
     private ConnectorProvider connector;
     private QueryParamStyle queryParamStyle;
-    private String proxyHost;
-    private int proxyPort;
+    private String proxyUri;
     private boolean followRedirects;
 
     RestClientBuilderImpl() {
@@ -201,8 +200,8 @@ class RestClientBuilderImpl implements RestClientBuilder {
         WebTarget webTarget = client.target(this.uri);
         webTarget.property(ClientProperties.FOLLOW_REDIRECTS, followRedirects);
 
-        if (proxyHost != null) {
-            webTarget.property(ClientProperties.PROXY_URI, "http://" + proxyHost + ":" + proxyPort);
+        if (proxyUri != null) {
+            webTarget.property(ClientProperties.PROXY_URI, proxyUri);
         }
 
         if (queryParamStyle != null) {
@@ -448,8 +447,15 @@ class RestClientBuilderImpl implements RestClientBuilder {
         if (proxyPort <= 0 || proxyPort > 65535) {
             throw new IllegalArgumentException("Invalid proxy port");
         }
-        this.proxyHost = proxyHost;
-        this.proxyPort = proxyPort;
+        this.proxyUri = proxyHost + ":" + proxyPort;
+        return this;
+    }
+    
+    public RestClientBuilder proxyUri(String proxyUri) {
+        if (proxyUri == null) {
+            throw new IllegalArgumentException("Proxy URI must not be null");
+        }
+        this.proxyUri = proxyUri;
         return this;
     }
 

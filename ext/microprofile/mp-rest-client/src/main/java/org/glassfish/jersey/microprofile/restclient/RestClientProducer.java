@@ -144,8 +144,10 @@ class RestClientProducer implements Bean<Object>, PassivationCapable {
                 .ifPresent(value -> restClientBuilder.followRedirects(value));
         getConfigOption(String.class, CONFIG_QUERY_PARAM_STYLE)
                 .ifPresent(value -> restClientBuilder.queryParamStyle(QueryParamStyle.valueOf(value)));
-        getConfigOption(String.class, CONFIG_PROXY_ADDRESS)
-                .ifPresent(value -> restClientBuilder.getConfiguration().getProperties().put(ClientProperties.PROXY_URI, value));
+        if (restClientBuilder instanceof RestClientBuilderImpl) {
+            getConfigOption(String.class, CONFIG_PROXY_ADDRESS)
+                    .ifPresent(value -> ((RestClientBuilderImpl) restClientBuilder).proxyUri(value));
+        }
 
         // Providers from configuration
         addConfiguredProviders(restClientBuilder);
