@@ -33,6 +33,7 @@ import javax.ws.rs.RuntimeType;
 
 import javax.inject.Singleton;
 import org.glassfish.jersey.internal.BootstrapBag;
+import org.glassfish.jersey.internal.util.collection.LazyValue;
 
 import org.glassfish.jersey.model.ContractProvider;
 import org.glassfish.jersey.model.internal.ComponentBag;
@@ -242,13 +243,16 @@ public class ProviderBinder {
                     .collect(Collectors.toSet());
         }
         for (final Class<?> providerClass : classes) {
-            Collection<ComponentProvider> componentProviders = bootstrapBag.getComponentProviders().get();
             boolean registered = false;
-            for (ComponentProvider provider : componentProviders) {
-                if (provider.bind(providerClass, Arrays.stream(providerClass.getInterfaces()).collect(toSet()))) {
-                    registered = true;
+            LazyValue<Collection<ComponentProvider>> componentProvider = bootstrapBag.getComponentProviders();
+            if (componentProvider != null) {
+                for (ComponentProvider provider : componentProvider.get()) {
+                    if (provider.bind(providerClass, Arrays.stream(providerClass.getInterfaces()).collect(toSet()))) {
+                        registered = true;
+                    }
                 }
             }
+
             if (!registered) {
                 final ContractProvider model = componentBag.getModel(providerClass);
                 binderToRegister.addAll(createProviderBinders(providerClass, model));

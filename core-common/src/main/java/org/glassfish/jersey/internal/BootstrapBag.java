@@ -194,8 +194,6 @@ public class BootstrapBag {
     }
 
     public LazyValue<Collection<ComponentProvider>> getComponentProviders() {
-        requireNonNull(componentProviders, new GenericType<LazyValue<Collection<ComponentProvider>>>() {
-        }.getType());
         return componentProviders;
     }
 

@@ -98,6 +98,11 @@
             <version>${jetty.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.ext.cdi</groupId>
+            <artifactId>jersey-weld2-se</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
     <dependencyManagement>

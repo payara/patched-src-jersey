@@ -85,6 +85,7 @@ import org.glassfish.jersey.internal.util.collection.Cache;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.model.Parameter;
 import org.glassfish.jersey.server.model.Resource;
+import org.glassfish.jersey.spi.ComponentProvider;
 import org.glassfish.jersey.server.spi.internal.ValueParamProvider;
 
 import org.glassfish.hk2.api.ClassAnalyzer;
@@ -94,7 +95,6 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import org.glassfish.jersey.client.spi.ClientComponentProvider;
 import org.glassfish.jersey.server.spi.ServerComponentProvider;
 
 /**
@@ -107,7 +107,7 @@ import org.glassfish.jersey.server.spi.ServerComponentProvider;
  * @author Jakub Podlesak
  */
 @Priority(200)
-public class CdiComponentProvider implements ServerComponentProvider, ClientComponentProvider, Extension {
+public class CdiComponentProvider implements ServerComponentProvider, Extension {
 
     private static final Logger LOGGER = Logger.getLogger(CdiComponentProvider.class.getName());
 
@@ -345,7 +345,7 @@ public class CdiComponentProvider implements ServerComponentProvider, ClientComp
         }
     }
 
-    private boolean isCdiComponent(final Class<?> component) {
+    boolean isCdiComponent(final Class<?> component) {
         final Annotation[] qualifiers = CdiUtil.getQualifiers(component.getAnnotations());
         return !beanManager.getBeans(component, qualifiers).isEmpty();
     }

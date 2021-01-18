@@ -5,10 +5,10 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import javax.inject.Inject;
-
+import javax.ws.rs.ConstrainedTo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.RuntimeType;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -22,6 +22,7 @@ import org.glassfish.jersey.message.internal.ReaderInterceptorExecutor;
 import org.reactivestreams.Publisher;
 
 @Consumes(MediaType.SERVER_SENT_EVENTS)
+@ConstrainedTo(RuntimeType.CLIENT)
 public class SseMessageBodyReader implements MessageBodyReader<Publisher<InboundEvent>> {
 
     @Context
@@ -33,19 +34,15 @@ public class SseMessageBodyReader implements MessageBodyReader<Publisher<Inbound
     @Inject
     private javax.inject.Provider<PropertiesDelegate> propertiesDelegateProvider;
 
-    private final ExecutorService executor;
+    @Inject
+    private javax.inject.Provider<ExecutorService> executorServiceProvider;
 
-    public SseMessageBodyReader(final ExecutorService executor) {
-        this.executor = executor;
-    }
-
-    public SseMessageBodyReader() {
-        this.executor = Executors.newCachedThreadPool();
-    }
+    private final int DEFAULT_BUFFER_SIZE = 512;
 
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-        return Publisher.class.isAssignableFrom(type) && MediaType.SERVER_SENT_EVENTS_TYPE.isCompatible(mediaType);
+        return Publisher.class.isAssignableFrom(type)
+                && MediaType.SERVER_SENT_EVENTS_TYPE.isCompatible(mediaType);
     }
 
     @Override
@@ -64,7 +61,8 @@ public class SseMessageBodyReader implements MessageBodyReader<Publisher<Inbound
                 headers,
                 messageBodyWorkers.get(),
                 propertiesDelegateProvider.get(),
-                executor
+                executorServiceProvider.get(),
+                DEFAULT_BUFFER_SIZE
         );
     }
 }
