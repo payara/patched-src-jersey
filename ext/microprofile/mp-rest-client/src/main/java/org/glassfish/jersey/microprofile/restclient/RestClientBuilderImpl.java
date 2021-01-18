@@ -450,7 +450,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
         this.proxyUri = proxyHost + ":" + proxyPort;
         return this;
     }
-    
+
     public RestClientBuilder proxyUri(String proxyUri) {
         if (proxyUri == null) {
             throw new IllegalArgumentException("Proxy URI must not be null");
