@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import javax.annotation.Priority;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.Priorities;
@@ -56,9 +57,11 @@ import org.eclipse.microprofile.rest.client.RestClientDefinitionException;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.ext.AsyncInvocationInterceptor;
 import org.eclipse.microprofile.rest.client.ext.AsyncInvocationInterceptorFactory;
+import org.eclipse.microprofile.rest.client.ext.QueryParamStyle;
 import org.eclipse.microprofile.rest.client.ext.ResponseExceptionMapper;
 import org.eclipse.microprofile.rest.client.spi.RestClientListener;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.Initializable;
 import org.glassfish.jersey.client.spi.ConnectorProvider;
 import org.glassfish.jersey.ext.cdi1x.internal.CdiUtil;
@@ -95,9 +98,12 @@ class RestClientBuilderImpl implements RestClientBuilder {
     private KeyStore sslKeyStore;
     private char[] sslKeyStorePassword;
     private ConnectorProvider connector;
+    private QueryParamStyle queryParamStyle;
+    private String proxyUri;
+    private boolean followRedirects;
 
     RestClientBuilderImpl() {
-        clientBuilder = ClientBuilder.newBuilder();
+        clientBuilder = new JerseyRestClientBuilder();
         responseExceptionMappers = new HashSet<>();
         paramConverterProviders = new HashSet<>();
         asyncInterceptorFactories = new ArrayList<>();
@@ -153,6 +159,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
         processProviders(interfaceClass);
         InjectionManagerExposer injectionManagerExposer = new InjectionManagerExposer();
         register(injectionManagerExposer);
+        register(SseMessageBodyReader.class);
 
         //We need to check first if default exception mapper was not disabled by property on builder.
         registerExceptionMapper();
@@ -184,13 +191,22 @@ class RestClientBuilderImpl implements RestClientBuilder {
             ClientConfig config = new ClientConfig();
             config.loadFrom(getConfiguration());
             config.connectorProvider(connector);
-            client = ClientBuilder.newClient(config);
+            client = clientBuilder.withConfig(config).build();
         }
 
         if (client instanceof Initializable) {
             ((Initializable) client).preInitialize();
         }
         WebTarget webTarget = client.target(this.uri);
+        webTarget.property(ClientProperties.FOLLOW_REDIRECTS, followRedirects);
+
+        if (proxyUri != null) {
+            webTarget.property(ClientProperties.PROXY_URI, proxyUri);
+        }
+
+        if (queryParamStyle != null) {
+            webTarget.property(QueryParamStyle.class.getSimpleName(), queryParamStyle);
+        }
 
         RestClientModel restClientModel = RestClientModel.from(interfaceClass,
                                                                responseExceptionMappers,
@@ -415,6 +431,38 @@ class RestClientBuilderImpl implements RestClientBuilder {
         if (instance instanceof ConnectorProvider) {
             connector = (ConnectorProvider) instance;
         }
+    }
+
+    @Override
+    public RestClientBuilder followRedirects(boolean followRedirects) {
+        this.followRedirects = followRedirects;
+        return this;
+    }
+
+    @Override
+    public RestClientBuilder proxyAddress(String proxyHost, int proxyPort) {
+        if (proxyHost == null) {
+            throw new IllegalArgumentException("Proxy host must not be null");
+        }
+        if (proxyPort <= 0 || proxyPort > 65535) {
+            throw new IllegalArgumentException("Invalid proxy port");
+        }
+        this.proxyUri = proxyHost + ":" + proxyPort;
+        return this;
+    }
+
+    public RestClientBuilder proxyUri(String proxyUri) {
+        if (proxyUri == null) {
+            throw new IllegalArgumentException("Proxy URI must not be null");
+        }
+        this.proxyUri = proxyUri;
+        return this;
+    }
+
+    @Override
+    public RestClientBuilder queryParamStyle(QueryParamStyle queryParamStyle) {
+        this.queryParamStyle = queryParamStyle;
+        return this;
     }
 
     private static class InjectionManagerExposer implements Feature {

@@ -27,14 +27,14 @@ import org.glassfish.jersey.ext.cdi1x.internal.GenericCdiBeanSupplier;
 import org.glassfish.jersey.internal.inject.Binding;
 import org.glassfish.jersey.internal.inject.Bindings;
 import org.glassfish.jersey.internal.inject.InjectionManager;
-import org.glassfish.jersey.server.spi.ComponentProvider;
+import org.glassfish.jersey.server.spi.ServerComponentProvider;
 
 /**
  * Utility that binds HK2 factory to provide CDI managed validation result bean.
  * This is to make sure validation result could be injected as a resource method parameter
  * even when running in CDI environment.
  */
-public class CdiValidationResultBinder implements Extension, ComponentProvider {
+public class CdiValidationResultBinder implements Extension, ServerComponentProvider {
 
     @Inject
     BeanManager beanManager;

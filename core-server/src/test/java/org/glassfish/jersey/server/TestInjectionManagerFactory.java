@@ -100,7 +100,7 @@ public final class TestInjectionManagerFactory {
                 new ParamExtractorConfigurator(),
                 new ValueParamProviderConfigurator(),
                 new JerseyResourceContextConfigurator(),
-                new ComponentProviderConfigurator(),
+                new ServerComponentProviderConfigurator(),
                 new TestConfigConfigurator(runtimeConfig),
                 new ContextResolverFactory.ContextResolversConfigurator(),
                 new MessageBodyFactory.MessageBodyWorkersConfigurator(),
