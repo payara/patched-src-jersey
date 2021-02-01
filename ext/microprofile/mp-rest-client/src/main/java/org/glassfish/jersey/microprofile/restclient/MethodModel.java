@@ -120,11 +120,11 @@ class MethodModel {
         this.invocationInterceptors = builder.invocationInterceptors;
         if (httpMethod.isEmpty()) {
             subResourceModel = RestClientModel.from(returnType.getRawType(),
-                    interfaceModel.getResponseExceptionMappers(),
-                    interfaceModel.getParamConverterProviders(),
-                    interfaceModel.getAsyncInterceptorFactories(),
-                    interfaceModel.getInjectionManager(),
-                    interfaceModel.getBeanManager());
+                                                    interfaceModel.getResponseExceptionMappers(),
+                                                    interfaceModel.getParamConverterProviders(),
+                                                    interfaceModel.getAsyncInterceptorFactories(),
+                                                    interfaceModel.getInjectionManager(),
+                                                    interfaceModel.getBeanManager());
         } else {
             subResourceModel = null;
         }
@@ -159,10 +159,10 @@ class MethodModel {
                 .forEach(parameterModel ->
                                  webTargetAtomicReference.set((WebTarget)
                                                                       parameterModel
-                        .handleParameter(webTargetAtomicReference.get(),
-                                PathParam.class,
-                                args[parameterModel
-                                        .getParamPosition()])));
+                                                                              .handleParameter(webTargetAtomicReference.get(),
+                                                                                               PathParam.class,
+                                                                                               args[parameterModel
+                                                                                                       .getParamPosition()])));
 
         parameterModels.stream()
                 .filter(ParamModel::isEntity)
@@ -211,15 +211,15 @@ class MethodModel {
         parameterModels.stream()
                 .filter(parameterModel -> parameterModel.handles(FormParam.class))
                 .forEach(parameterModel -> parameterModel.handleParameter(form,
-                FormParam.class,
-                args[parameterModel.getParamPosition()]));
+                                                                          FormParam.class,
+                                                                          args[parameterModel.getParamPosition()]));
         return form;
     }
 
     private Object synchronousCall(Invocation.Builder builder,
-            Object entity,
-            Method method,
-            MultivaluedMap<String, Object> customHeaders) {
+                                   Object entity,
+                                   Method method,
+                                   MultivaluedMap<String, Object> customHeaders) {
         Response response;
 
         if (entity != null
@@ -241,9 +241,9 @@ class MethodModel {
     }
 
     private CompletableFuture asynchronousCall(Invocation.Builder builder,
-            Object entity,
-            Method method,
-            MultivaluedMap<String, Object> customHeaders) {
+                                               Object entity,
+                                               Method method,
+                                               MultivaluedMap<String, Object> customHeaders) {
 
         //AsyncInterceptors initialization
         List<AsyncInvocationInterceptor> asyncInterceptors = interfaceModel.getAsyncInterceptorFactories().stream()
@@ -302,7 +302,7 @@ class MethodModel {
     private <T> T subResourceProxy(WebTarget webTarget, Class<T> subResourceType) {
         return (T) Proxy.newProxyInstance(subResourceType.getClassLoader(),
                                           new Class[] {subResourceType},
-                new ProxyInvocationHandler(webTarget, subResourceModel)
+                                          new ProxyInvocationHandler(webTarget, subResourceModel)
         );
     }
 
@@ -313,8 +313,8 @@ class MethodModel {
         parameterModels.stream()
                 .filter(parameterModel -> parameterModel.handles(QueryParam.class))
                 .forEach(parameterModel -> parameterModel.handleParameter(queryParams,
-                QueryParam.class,
-                args[parameterModel.getParamPosition()]));
+                                                                          QueryParam.class,
+                                                                          args[parameterModel.getParamPosition()]));
 
         for (Map.Entry<String, Object[]> entry : queryParams.entrySet()) {
             toReturn = toReturn.queryParam(entry.getKey(), entry.getValue());
@@ -328,9 +328,9 @@ class MethodModel {
         parameterModels.stream()
                 .filter(parameterModel -> parameterModel.handles(MatrixParam.class))
                 .forEach(parameterModel -> toReturn
-                .set((WebTarget) parameterModel.handleParameter(toReturn.get(),
-                        MatrixParam.class,
-                        args[parameterModel.getParamPosition()])));
+                        .set((WebTarget) parameterModel.handleParameter(toReturn.get(),
+                                                                        MatrixParam.class,
+                                                                        args[parameterModel.getParamPosition()])));
         return toReturn.get();
     }
 
@@ -341,8 +341,8 @@ class MethodModel {
         parameterModels.stream()
                 .filter(parameterModel -> parameterModel.handles(CookieParam.class))
                 .forEach(parameterModel -> parameterModel.handleParameter(cookies,
-                CookieParam.class,
-                args[parameterModel.getParamPosition()]));
+                                                                          CookieParam.class,
+                                                                          args[parameterModel.getParamPosition()]));
 
         for (Map.Entry<String, String> entry : cookies.entrySet()) {
             toReturn = toReturn.cookie(entry.getKey(), entry.getValue());
@@ -370,8 +370,8 @@ class MethodModel {
         parameterModels.stream()
                 .filter(parameterModel -> parameterModel.handles(HeaderParam.class))
                 .forEach(parameterModel -> parameterModel.handleParameter(customHeaders,
-                HeaderParam.class,
-                args[parameterModel.getParamPosition()]));
+                                                                          HeaderParam.class,
+                                                                          args[parameterModel.getParamPosition()]));
 
         MultivaluedMap<String, String> inbound = new MultivaluedHashMap<>();
         HeadersContext.get().ifPresent(headersContext -> inbound.putAll(headersContext.inboundHeaders()));
@@ -397,19 +397,19 @@ class MethodModel {
                         T instance = (T) ReflectionUtil.createProxyInstance(interfaceModel.getRestClientClass());
                         if (method.getParameterCount() > 0) {
                             customHeaders.put(clientHeaderParamModel.getHeaderName(),
-                                    createList(method.invoke(instance, clientHeaderParamModel.getHeaderName())));
+                                              createList(method.invoke(instance, clientHeaderParamModel.getHeaderName())));
                         } else {
                             customHeaders.put(clientHeaderParamModel.getHeaderName(),
-                                    createList(method.invoke(instance, null)));
+                                              createList(method.invoke(instance, null)));
                         }
                     } else {
                         //Method is static
                         if (method.getParameterCount() > 0) {
                             customHeaders.put(clientHeaderParamModel.getHeaderName(),
-                                    createList(method.invoke(null, clientHeaderParamModel.getHeaderName())));
+                                              createList(method.invoke(null, clientHeaderParamModel.getHeaderName())));
                         } else {
                             customHeaders.put(clientHeaderParamModel.getHeaderName(),
-                                    createList(method.invoke(null, null)));
+                                              createList(method.invoke(null, null)));
                         }
                     }
                 } catch (IllegalAccessException e) {
@@ -476,8 +476,8 @@ class MethodModel {
         List<Class<?>> httpAnnotations = InterfaceUtil.getHttpAnnotations(method);
         if (httpAnnotations.size() > 1) {
             throw new RestClientDefinitionException("Method can't have more then one annotation of @HttpMethod type. "
-                    + "See " + classModel.getRestClientClass().getName()
-                    + "::" + method.getName());
+                                                            + "See " + classModel.getRestClientClass().getName()
+                                                            + "::" + method.getName());
         }
         if (httpAnnotations.isEmpty()) {
             //Sub resource method
@@ -534,15 +534,15 @@ class MethodModel {
                     return;
                 }
                 List<Interceptor<?>> interceptors = beanManager.resolveInterceptors(InterceptionType.AROUND_INVOKE,
-                        allInterceptorAnnotations);
+                                                                                    allInterceptorAnnotations);
                 if (!interceptors.isEmpty()) {
                     for (Interceptor<?> interceptor : interceptors) {
                         Object interceptorInstance = beanManager.getReference(interceptor,
-                                interceptor.getBeanClass(),
-                                interfaceModel.getCreationalContext());
+                                                                              interceptor.getBeanClass(),
+                                                                              interfaceModel.getCreationalContext());
                         invocationInterceptors.add(new InterceptorInvocationContext
                                 .InvocationInterceptor(interceptorInstance,
-                                interceptor));
+                                                       interceptor));
                     }
                 }
             }
@@ -672,25 +672,25 @@ class MethodModel {
             for (String parameterName : methodPathParameters) {
                 if (!parameters.contains(parameterName)) {
                     throw new RestClientDefinitionException("Parameter name " + parameterName + " on "
-                            + interfaceModel.getRestClientClass().getName()
-                            + "::" + method.getName()
-                            + " doesn't match any @Path variable name.");
+                                                                    + interfaceModel.getRestClientClass().getName()
+                                                                    + "::" + method.getName()
+                                                                    + " doesn't match any @Path variable name.");
                 }
                 parameters.remove(parameterName);
             }
             if (!parameters.isEmpty()) {
                 throw new RestClientDefinitionException("Some variable names does not have matching @PathParam "
-                        + "defined on method " + interfaceModel.getRestClientClass()
-                                .getName()
-                        + "::" + method.getName());
+                                                                + "defined on method " + interfaceModel.getRestClientClass()
+                        .getName()
+                                                                + "::" + method.getName());
             }
             List<ParamModel> entities = parameterModels.stream()
                     .filter(ParamModel::isEntity)
                     .collect(Collectors.toList());
             if (entities.size() > 1) {
                 throw new RestClientDefinitionException("You cant have more than 1 entity method parameter! Check "
-                        + interfaceModel.getRestClientClass().getName()
-                        + "::" + method.getName());
+                                                                + interfaceModel.getRestClientClass().getName()
+                                                                + "::" + method.getName());
             }
         }
 
@@ -700,7 +700,7 @@ class MethodModel {
                 String headerName = clientHeaderParamModel.getHeaderName();
                 if (names.contains(headerName)) {
                     throw new RestClientDefinitionException("Header name cannot be registered more then once on the same target."
-                            + "See " + interfaceModel.getRestClientClass().getName());
+                                                                    + "See " + interfaceModel.getRestClientClass().getName());
                 }
                 names.add(headerName);
             }
