@@ -447,7 +447,7 @@
                             <exclude>bundles/**</exclude>
                             <fileExclude>module-info.java</fileExclude>
                         </sourceFileExcludes>
-                        <verbose />
+                        <verbose/>
                         <additionalparam>-Xdoclint:none</additionalparam>
                         <maxmemory>256m</maxmemory>
                     </configuration>
@@ -998,7 +998,7 @@
         <profile>
             <id>securityOff</id>
             <properties>
-                <surefire.security.argline />
+                <surefire.security.argline/>
             </properties>
         </profile>
         <profile>
@@ -1927,7 +1927,7 @@
         <findbugs.threshold>Low</findbugs.threshold>
         <!-- the exclude file cannot be here directly, as FindBugs would interpret the path as relative to
         each module; the default exclude filter file is at etc/config/findbugs-exclude.xml -->
-        <findbugs.exclude />
+        <findbugs.exclude/>
         <findbugs.glassfish.logging.validLoggerPrefixes>
             javax.enterprise
         </findbugs.glassfish.logging.validLoggerPrefixes>
@@ -1940,11 +1940,11 @@
         <release.tests.args>-Dmaven.test.skip=false</release.tests.args>
         <release.preparationGoals>clean install</release.preparationGoals>
         <skip.tests>false</skip.tests>
-        <xdk.absolute.path />
-        <surefire.security.argline />
-        <surefire.coverage.argline />
+        <xdk.absolute.path/>
+        <surefire.security.argline/>
+        <surefire.coverage.argline/>
         <surefire.maxmem.argline>1024</surefire.maxmem.argline>
-        <failsafe.coverage.argline />
+        <failsafe.coverage.argline/>
         <server.coverage.argline>${failsafe.coverage.argline}</server.coverage.argline>
 
 
@@ -2003,7 +2003,7 @@
         <jstl.version>1.2.4</jstl.version>
         <jta.api.version>1.3.2</jta.api.version>
         <kryo.version>4.0.1</kryo.version>
-        <mimepull.version>1.9.11</mimepull.version>
+        <mimepull.version>1.9.14</mimepull.version>
         <mockito.version>1.10.19</mockito.version>
         <moxy.version>2.7.4</moxy.version>
         <mustache.version>0.8.17</mustache.version>
