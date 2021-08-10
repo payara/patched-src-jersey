@@ -24,13 +24,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -68,7 +67,8 @@ class InterfaceModel {
     private final Set<Annotation> interceptorAnnotations;
 
     /**
-     * Creates new model based on interface class. Interface is parsed according to specific annotations.
+     * Creates new model based on interface class. Interface is parsed according to
+     * specific annotations.
      *
      * @param context RestClient data context
      * @return new model instance
@@ -135,7 +135,8 @@ class InterfaceModel {
     }
 
     /**
-     * Returns {@link List} of processed annotation {@link ClientHeaderParam} to {@link ClientHeaderParamModel}
+     * Returns {@link List} of processed annotation {@link ClientHeaderParam} to
+     * {@link ClientHeaderParamModel}
      *
      * @return registered factories
      */
@@ -177,12 +178,12 @@ class InterfaceModel {
      * @return converted value of argument
      */
     Object resolveParamValue(Object arg, Parameter parameter) {
-        final Iterable<ParameterUpdaterProvider> parameterUpdaterProviders
-                = Providers.getAllProviders(context.injectionManager(), ParameterUpdaterProvider.class);
+        final Iterable<ParameterUpdaterProvider> parameterUpdaterProviders = Providers
+                .getAllProviders(context.injectionManager(), ParameterUpdaterProvider.class);
         for (final ParameterUpdaterProvider parameterUpdaterProvider : parameterUpdaterProviders) {
             if (parameterUpdaterProvider != null) {
-                ParameterUpdater<Object, Object> updater =
-                        (ParameterUpdater<Object, Object>) parameterUpdaterProvider.get(parameter);
+                ParameterUpdater<Object, Object> updater = (ParameterUpdater<Object, Object>) parameterUpdaterProvider
+                        .get(parameter);
                 return updater.update(arg);
             }
         }
@@ -222,21 +223,23 @@ class InterfaceModel {
         }
 
         /**
-         * Path value from {@link Path} annotation. If annotation is null, empty String is set as path.
+         * Path value from {@link Path} annotation. If annotation is null, empty String
+         * is set as path.
          *
          * @param path {@link Path} annotation
          * @return updated Builder instance
          */
         Builder pathValue(Path path) {
             this.pathValue = path != null ? path.value() : "";
-            //if only / is added to path like this "localhost:80/test" it makes invalid path "localhost:80/test/"
+            // if only / is added to path like this "localhost:80/test" it makes invalid
+            // path "localhost:80/test/"
             this.pathValue = pathValue.equals("/") ? "" : pathValue;
             return this;
         }
 
         /**
-         * Extracts MediaTypes from {@link Produces} annotation.
-         * If annotation is null, new String array with {@link MediaType#APPLICATION_JSON} is set.
+         * Extracts MediaTypes from {@link Produces} annotation. If annotation is null,
+         * new String array with {@link MediaType#APPLICATION_JSON} is set.
          *
          * @param produces {@link Produces} annotation
          * @return updated Builder instance
@@ -247,8 +250,8 @@ class InterfaceModel {
         }
 
         /**
-         * Extracts MediaTypes from {@link Consumes} annotation.
-         * If annotation is null, new String array with {@link MediaType#APPLICATION_JSON} is set.
+         * Extracts MediaTypes from {@link Consumes} annotation. If annotation is null,
+         * new String array with {@link MediaType#APPLICATION_JSON} is set.
          *
          * @param consumes {@link Consumes} annotation
          * @return updated Builder instance
@@ -259,7 +262,8 @@ class InterfaceModel {
         }
 
         /**
-         * Process data from {@link ClientHeaderParam} annotation to extract methods and values.
+         * Process data from {@link ClientHeaderParam} annotation to extract methods and
+         * values.
          *
          * @param clientHeaderParams {@link ClientHeaderParam} annotations
          * @return updated Builder instance
@@ -272,16 +276,23 @@ class InterfaceModel {
         }
 
         Builder clientHeadersFactory(RegisterClientHeaders registerClientHeaders) {
-            if (registerClientHeaders != null) {
-                Class<? extends ClientHeadersFactory> value = registerClientHeaders.value();
-                try {
-                    clientHeadersFactory = CDI.current().select(value).get();
-                } catch (Exception ex) {
-                    LOGGER.log(Level.FINEST, ex, () -> "This class is not a CDI bean. " + value);
-                    clientHeadersFactory = ReflectionUtil.createInstance(value);
+            clientHeadersFactory = registerClientHeaders != null ? initialiseClientHeadersFactory(registerClientHeaders)
+                    : null;
+            return this;
+        }
+
+        private ClientHeadersFactory initialiseClientHeadersFactory(RegisterClientHeaders annotation) {
+            // CDI is in use
+            BeanManager beanManager = context.beanManager();
+            if (beanManager != null) {
+                Bean<?> bean = beanManager.resolve(beanManager.getBeans(annotation.value()));
+                // Client Header is a CDI bean
+                if (bean != null) {
+                    CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
+                    return (ClientHeadersFactory) beanManager.getReference(bean, bean.getBeanClass(), ctx);
                 }
             }
-            return this;
+            return ReflectionUtil.createInstance(annotation.value());
         }
 
         /**
@@ -304,8 +315,9 @@ class InterfaceModel {
             for (ClientHeaderParamModel clientHeaderParamModel : clientHeaders) {
                 String headerName = clientHeaderParamModel.getHeaderName();
                 if (names.contains(headerName)) {
-                    throw new RestClientDefinitionException("Header name cannot be registered more then once on the same target."
-                                                                    + "See " + restClientClass.getName());
+                    throw new RestClientDefinitionException(
+                            "Header name cannot be registered more then once on the same target." + "See "
+                                    + restClientClass.getName());
                 }
                 names.add(headerName);
             }
