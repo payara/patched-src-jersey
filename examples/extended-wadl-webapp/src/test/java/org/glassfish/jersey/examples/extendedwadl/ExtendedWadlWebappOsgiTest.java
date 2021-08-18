@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2010, 2020 Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) Payara Services Ltd.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Distribution License v. 1.0, which is available at
@@ -104,7 +105,7 @@ public class ExtendedWadlWebappOsgiTest {
 
                 junitBundles(),
 
-                mavenBundle("org.ops4j.pax.url", "pax-url-mvn"),
+                mavenBundle("org.ops4j.pax.url", "pax-url-mvn").version("1.3.7"),
 
                 // HK2
                 mavenBundle().groupId("org.glassfish.hk2").artifactId("hk2-api").versionAsInProject(),

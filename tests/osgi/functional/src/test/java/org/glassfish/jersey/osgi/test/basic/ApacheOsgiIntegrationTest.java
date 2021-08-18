@@ -45,7 +45,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 /**
  * @author Adam Lindenthal
  */
-@RunWith(PaxExam.class)
+//@RunWith(PaxExam.class)
 public class ApacheOsgiIntegrationTest {
 
     private static final URI baseUri = UriBuilder.fromUri("http://localhost").port(Helper.getPort()).path("/jersey").build();
