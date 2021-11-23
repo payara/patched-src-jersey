@@ -36,6 +36,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.Priority;
 import javax.net.ssl.HostnameVerifier;
@@ -445,7 +447,19 @@ class RestClientBuilderImpl implements RestClientBuilder {
         if (proxyPort <= 0 || proxyPort > 65535) {
             throw new IllegalArgumentException("Invalid proxy port");
         }
-        property(ClientProperties.PROXY_URI, proxyHost + ":" + proxyPort);
+
+        // If proxyString is something like "localhost:8765" we need to add a scheme since the connectors expect one
+        String proxyString = proxyHost + ":" + proxyPort;
+        URI proxyURI = URI.create(proxyString);
+        // Check both scheme and host, since "localhost:8765" will set the scheme as "localhost" and the host as "null"
+        if (proxyURI.getScheme() == null || proxyURI.getHost() == null) {
+            proxyString = "http://" + proxyString;
+            Logger.getLogger(RestClientBuilderImpl.class.getName()).log(Level.FINE,
+                    "No schema provided with proxyHost: " + proxyHost + ". Defaulting to HTTP, proxy address = "
+                            + proxyString);
+        }
+
+        property(ClientProperties.PROXY_URI, proxyString);
         return this;
     }
 
