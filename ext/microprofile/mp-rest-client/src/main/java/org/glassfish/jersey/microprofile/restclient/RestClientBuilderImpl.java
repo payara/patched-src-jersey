@@ -449,13 +449,26 @@ class RestClientBuilderImpl implements RestClientBuilder {
         }
 
         // If proxyString is something like "localhost:8765" we need to add a scheme since the connectors expect one
+        boolean prependScheme = false;
         String proxyString = proxyHost + ":" + proxyPort;
-        URI proxyURI = URI.create(proxyString);
-        // Check both scheme and host, since "localhost:8765" will set the scheme as "localhost" and the host as "null"
-        if (proxyURI.getHost() == null && proxyURI.getScheme().equals(proxyHost)) {
+        if (proxyString.split(":").length == 2) {
+            // Check if first character is a number to account for if proxyHost is given as an IP rather than a name
+            // URI.create("127.0.0.1:8765") will lead to an IllegalArgumentException
+            if (proxyString.matches("\\d.*")) {
+                prependScheme = true;
+            } else {
+                // "localhost:8765" will set the scheme as "localhost" and the host as "null"
+                URI proxyURI = URI.create(proxyString);
+                if (proxyURI.getHost() == null && proxyURI.getScheme().equals(proxyHost)) {
+                    prependScheme = true;
+                }
+            }
+        }
+
+        if (prependScheme) {
             proxyString = "http://" + proxyString;
             Logger.getLogger(RestClientBuilderImpl.class.getName()).log(Level.FINE,
-                    "No schema provided with proxyHost: " + proxyHost + ". Defaulting to HTTP, proxy address = "
+                    "No scheme provided with proxyHost: " + proxyHost + ". Defaulting to HTTP, proxy address = "
                             + proxyString);
         }
 
