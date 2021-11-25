@@ -452,7 +452,7 @@ class RestClientBuilderImpl implements RestClientBuilder {
         String proxyString = proxyHost + ":" + proxyPort;
         URI proxyURI = URI.create(proxyString);
         // Check both scheme and host, since "localhost:8765" will set the scheme as "localhost" and the host as "null"
-        if (proxyURI.getScheme() == null || proxyURI.getHost() == null) {
+        if (proxyURI.getHost() == null && proxyURI.getScheme().equals(proxyHost)) {
             proxyString = "http://" + proxyString;
             Logger.getLogger(RestClientBuilderImpl.class.getName()).log(Level.FINE,
                     "No schema provided with proxyHost: " + proxyHost + ". Defaulting to HTTP, proxy address = "
