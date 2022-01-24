@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.glassfish.jersey.archetypes</groupId>
         <artifactId>project</artifactId>
-        <version>3.0.3.payara-p2</version>
+        <version>3.0.3.payara-p3-SNAPSHOT</version>
     </parent>
 
     <artifactId>jersey-example-java8-webapp</artifactId>
