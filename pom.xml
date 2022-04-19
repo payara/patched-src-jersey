@@ -2168,17 +2168,17 @@
         <jakarta.interceptor.version>2.0.0</jakarta.interceptor.version>
         <jakarta.persistence.version>3.0.0</jakarta.persistence.version>
         <jakarta.validation.api.version>3.0.0</jakarta.validation.api.version>
-        <jakarta.jaxb.api.version>3.0.0</jakarta.jaxb.api.version>
-        <jaxb.ri.version>3.0.0</jaxb.ri.version>
+        <jakarta.jaxb.api.version>4.0.0</jakarta.jaxb.api.version>
+        <jaxb.ri.version>4.0.0-M4</jaxb.ri.version>
         <jaxrs.api.spec.version>3.0</jaxrs.api.spec.version>
         <jaxrs.api.impl.version>3.0.0</jaxrs.api.impl.version>
         <jetty.version>11.0.0</jetty.version>
-        <jetty.plugin.version>11.0.0</jetty.plugin.version>
+        <jetty.plugin.version>11.0.7</jetty.plugin.version>
         <jetty.servlet.api.25.version>6.1.14</jetty.servlet.api.25.version>
         <jsonb.api.version>2.0.0</jsonb.api.version>
         <jsonp.ri.version>2.0.0</jsonp.ri.version>
         <jsonp.jaxrs.version>2.0.0</jsonp.jaxrs.version>
-        <moxy.version>3.0.0</moxy.version>
+        <moxy.version>4.0.0-M3</moxy.version>
         <yasson.version>2.0.1</yasson.version>
         <!-- END of Jakartified -->
 
