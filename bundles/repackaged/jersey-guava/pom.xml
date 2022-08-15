@@ -69,6 +69,7 @@
                     <artifactSet>
                         <includes>
                             <include>com.google.guava:guava:*</include>
+                            <include>com.google.guava:failureaccess:*</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -257,6 +258,11 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>failureaccess</artifactId>
             <optional>true</optional>
         </dependency>
     </dependencies>

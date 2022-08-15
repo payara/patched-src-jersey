@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -401,7 +402,7 @@ class JettyConnector implements Connector {
                         jettyRequest.abort(t);
                     }
                 }
-            });
+            }, Executors.newSingleThreadExecutor());
             final AtomicReference<ClientResponse> jerseyResponse = new AtomicReference<>();
             final ByteBufferInputStream entityStream = new ByteBufferInputStream();
             jettyRequest.send(new Response.Listener.Adapter() {

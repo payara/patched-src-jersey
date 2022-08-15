@@ -39,7 +39,9 @@
  */
 package org.glassfish.jersey.server.internal.scanning;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
@@ -49,6 +51,9 @@ import java.util.List;
 import java.util.Vector;
 import java.util.jar.JarInputStream;
 
+import mockit.Injectable;
+import mockit.Tested;
+import mockit.integration.junit4.JMockit;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -57,6 +62,7 @@ import static org.junit.Assert.fail;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Verifications;
+import org.junit.runner.RunWith;
 
 /**
  * Unit tests for {@link PackageNamesScanner}.
@@ -64,6 +70,7 @@ import mockit.Verifications;
  * @author Eric Navarro
  * @author Michal Gajdos
  */
+@RunWith(JMockit.class)
 public class PackageNamesScannerTest {
 
     private static final String[] packages = {"javax.ws.rs"};
@@ -112,22 +119,28 @@ public class PackageNamesScannerTest {
         new PackageNamesScanner(createTestClassLoader("bad", createTestURLStreamHandler("bad"), jaxRsApiPath), packages, false);
     }
 
+    @Tested
+    PackageNamesScanner scanner1 = new PackageNamesScanner(new String[]{"javax.ws.rs"}, false);
+    @Tested
+    PackageNamesScanner scanner2 = new PackageNamesScanner(new String[]{"javax.ws.rs.core"}, false);
+    @Tested
+    PackageNamesScanner scanner3 = new PackageNamesScanner(new String[]{"javax.ws.rs.client"}, false);
+
     /**
      * Reproducer for OWLS-19790: When scanner is reset the underlying JAR input streams should be closed.
      */
     @Test
-    public void testInputStreamClosedAfterReset(@Mocked final JarInputStream stream) throws Exception {
-        final PackageNamesScanner scanner1 = new PackageNamesScanner(new String[] {"javax.ws.rs"}, false);
-        final PackageNamesScanner scanner2 = new PackageNamesScanner(new String[] {"javax.ws.rs.core"}, false);
-        final PackageNamesScanner scanner3 = new PackageNamesScanner(new String[] {"javax.ws.rs.client"}, false);
+    public void testInputStreamClosedAfterReset() throws Exception {
+        final JarInputStream stream = new JarInputStream(
+                new ByteArrayInputStream("test".getBytes(), 0, 4));
+
+        new Expectations(InputStream.class){};
 
         scanner1.reset();
 
         scanner2.reset();
         scanner2.reset();
-
         scanner3.reset();
-
         new Verifications() {{
             stream.close();
             times = 4;
@@ -138,18 +151,18 @@ public class PackageNamesScannerTest {
      * Reproducer for OWLS-19790: When scanner is closed the underlying JAR input streams should be closed as well.
      */
     @Test
-    public void testInputStreamClosedAfterClose(@Mocked final JarInputStream stream) throws Exception {
-        final PackageNamesScanner scanner1 = new PackageNamesScanner(new String[] {"javax.ws.rs"}, false);
-        final PackageNamesScanner scanner2 = new PackageNamesScanner(new String[] {"javax.ws.rs.core"}, false);
-        final PackageNamesScanner scanner3 = new PackageNamesScanner(new String[] {"javax.ws.rs.client"}, false);
+    public void testInputStreamClosedAfterClose()  throws Exception {
+
+        final JarInputStream stream = new JarInputStream(
+                new ByteArrayInputStream("test".getBytes(), 0, 4));
+
+        new Expectations(JarInputStream.class){};
 
         scanner1.close();
 
         scanner2.close();
         scanner2.close();
-
         scanner3.close();
-
         new Verifications() {{
             stream.close();
             times = 3;
@@ -159,15 +172,18 @@ public class PackageNamesScannerTest {
     /**
      * Reproducer for OWLS-19790: When we iterate through the all entries provided by a scanner JAR input stream should be closed.
      */
+    @Tested
+    PackageNamesScanner scanner = new PackageNamesScanner(new String[]{"javax.ws.rs"}, false);
     @Test
-    public void testInputStreamClosedAfterIteration(@Mocked final JarInputStream stream) throws Exception {
-        new Expectations() {{
+    public void testInputStreamClosedAfterIteration(@Injectable("false") boolean recursive) throws Exception {
+        final JarInputStream stream = new JarInputStream(
+                new ByteArrayInputStream("test".getBytes(), 0, 4));
+
+        new Expectations(JarInputStream.class) {{
             stream.getNextJarEntry();
             result = null;
             stream.close();
         }};
-
-        final PackageNamesScanner scanner = new PackageNamesScanner(new String[] {"javax.ws.rs"}, false);
 
         while (scanner.hasNext()) {
             scanner.next();

@@ -264,6 +264,11 @@ public class ProviderBinder {
             public boolean apply(final ContractProvider input) {
                 return ComponentBag.EXCLUDE_EMPTY.apply(input) && ComponentBag.EXCLUDE_META_PROVIDERS.apply(input);
             }
+
+            @Override
+            public boolean test(ContractProvider input){
+                return apply(input);
+            }
         };
 
         // Bind provider classes except for pure meta-providers and providers with empty contract models (e.g. resources)
@@ -278,6 +283,11 @@ public class ProviderBinder {
                             constrainedTo,
                             registeredClasses == null || !registeredClasses.contains(componentClass),
                             false);
+                }
+
+                @Override
+                public boolean test(Class<?> input){
+                    return apply(input);
                 }
             });
         }
@@ -299,6 +309,11 @@ public class ProviderBinder {
                             constrainedTo,
                             registeredClasses == null || !registeredClasses.contains(componentClass),
                             false);
+                }
+
+                @Override
+                public boolean test(Object input){
+                    return apply(input);
                 }
             });
         }

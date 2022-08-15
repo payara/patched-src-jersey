@@ -1199,6 +1199,11 @@ public class ResourceConfig extends Application implements Configurable<Resource
                 public boolean apply(final Object external) {
                     return !originalRegistrations.contains(external.getClass());
                 }
+
+                @Override
+                public boolean test(Object input){
+                    return apply(input);
+                }
             });
             registerInstances(externalInstances);
 
@@ -1207,6 +1212,11 @@ public class ResourceConfig extends Application implements Configurable<Resource
                 @Override
                 public boolean apply(final Class<?> external) {
                     return !originalRegistrations.contains(external);
+                }
+
+                @Override
+                public boolean test(Class<?> input){
+                    return apply(input);
                 }
             });
             registerClasses(externalClasses);
@@ -1228,6 +1238,11 @@ public class ResourceConfig extends Application implements Configurable<Resource
                                 }
                                 return input != null;
                             }
+
+                            @Override
+                            public boolean test(Object input){
+                                return apply(input);
+                            }
                         }));
                     }
 
@@ -1240,6 +1255,11 @@ public class ResourceConfig extends Application implements Configurable<Resource
                                     Errors.warning(application, LocalizationMessages.NON_INSTANTIABLE_COMPONENT(null));
                                 }
                                 return input != null;
+                            }
+
+                            @Override
+                            public boolean test(Class<?> input){
+                                return apply(input);
                             }
                         }));
                     }

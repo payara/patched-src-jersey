@@ -690,6 +690,11 @@ public class CommonConfig implements FeatureContext, ExtendedConfig {
                     public boolean apply(final Binder binder) {
                         return !configured.contains(binder);
                     }
+
+                    @Override
+                    public boolean test(Binder input){
+                        return apply(input);
+                    }
                 });
     }
 

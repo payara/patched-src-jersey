@@ -69,7 +69,8 @@ class RxTestInvoker extends AbstractRxInvoker<Future> implements RxFutureInvoker
                 return getBuilder().method(name, entity, responseType);
             }
         };
-        return getExecutorService() != null ? getExecutorService().submit(task) : MoreExecutors.sameThreadExecutor().submit(task);
+        return getExecutorService() != null
+                ? getExecutorService().submit(task) : MoreExecutors.newDirectExecutorService().submit(task);
     }
 
     @Override
@@ -80,6 +81,7 @@ class RxTestInvoker extends AbstractRxInvoker<Future> implements RxFutureInvoker
                 return getBuilder().method(name, entity, responseType);
             }
         };
-        return getExecutorService() != null ? getExecutorService().submit(task) : MoreExecutors.sameThreadExecutor().submit(task);
+        return getExecutorService() != null
+                ? getExecutorService().submit(task) : MoreExecutors.newDirectExecutorService().submit(task);
     }
 }
