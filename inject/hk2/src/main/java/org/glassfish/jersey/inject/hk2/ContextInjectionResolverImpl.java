@@ -94,6 +94,12 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
 
         ActiveDescriptor<?> ad = descriptorCache.apply(new CacheKey(newInjectee));
 
+        if (newInjectee != null
+                && newInjectee.getParent() instanceof Field
+                && newInjectee.getInjecteeDescriptor() != null) {
+            newInjectee = new DescriptorOverridingInjectee(injectee, null);
+        }
+
         if (ad != null) {
             final ServiceHandle handle = serviceLocator.getServiceHandle(ad, newInjectee);
 
