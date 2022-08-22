@@ -94,6 +94,14 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
 
         ActiveDescriptor<?> ad = descriptorCache.apply(new CacheKey(newInjectee));
 
+        //this condition was added to force the creation of proxy classes instead of concrete fixing
+        // issues when injecting context fields values
+        if (newInjectee != null
+                && newInjectee.getParent() instanceof Field
+                && newInjectee.getInjecteeDescriptor() != null) {
+            newInjectee = new DescriptorOverridingInjectee(injectee, null);
+        }
+
         if (ad != null) {
             final ServiceHandle handle = serviceLocator.getServiceHandle(ad, newInjectee);
 
