@@ -285,7 +285,7 @@ public class NonPublicNonStaticTest {
 
         @Override
         public ResourceConfig configure() {
-            set(TestProperties.RECORD_LOG_LEVEL, Level.WARNING.intValue());
+            set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
             return new ResourceConfig(NonStaticResource.class);
         }
 
@@ -387,7 +387,7 @@ public class NonPublicNonStaticTest {
 
         @Override
         public ResourceConfig configure() {
-            set(TestProperties.RECORD_LOG_LEVEL, Level.WARNING.intValue());
+            set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
             return new ResourceConfig(InterfaceResource.class);
         }
 

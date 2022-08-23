@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.glassfish.jersey.incubator</groupId>
         <artifactId>project</artifactId>
-        <version>2.36</version>
+        <version>2.36.payara-p1-SNAPSHOT</version>
     </parent>
 
     <artifactId>jersey-cdi-inject-weld</artifactId>
@@ -123,7 +123,8 @@
                         </Export-Package>
                         <Import-Package>
                             sun.misc.*;resolution:=optional,
-                            ${jakarta.annotation.osgi.version},
+                            ${cdi.osgi.version},
+                            ${javax.annotation.osgi.version},
                             *
                         </Import-Package>
                     </instructions>
