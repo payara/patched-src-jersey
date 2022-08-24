@@ -537,7 +537,7 @@
         <profile>
             <id>jersey-tck</id>
             <properties>
-                <jersey.version>3.1.0-M7.payara.p1</jersey.version> <!-- When running the profile, use SNAPSHOT -->
+                <jersey.version>3.1.0-M7.payara.p1-SNAPSHOT</jersey.version> <!-- When running the profile, use SNAPSHOT -->
             </properties>
         </profile>
     </profiles>
