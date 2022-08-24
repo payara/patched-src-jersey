@@ -46,7 +46,7 @@
     <parent>
         <groupId>org.glassfish.jersey.ext.cdi</groupId>
         <artifactId>project</artifactId>
-        <version>2.25.1.payara-p7</version>
+        <version>2.25.1.payara-p9-SNAPSHOT</version>
     </parent>
 
     <artifactId>jersey-cdi1x</artifactId>

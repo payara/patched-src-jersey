@@ -841,6 +841,11 @@ public final class ApplicationHandler implements ContainerLifecycleListener {
             public boolean apply(final ContractProvider input) {
                 return false;
             }
+
+            @Override
+            public boolean test(ContractProvider input){
+                return apply(input);
+            }
         });
         bindProvidersAndResources(componentProviders, emptyComponentBag, newClasses, newInstances);
     }
@@ -943,6 +948,11 @@ public final class ApplicationHandler implements ContainerLifecycleListener {
                                 !registeredClasses.contains(componentClass),
                                 resourceClasses.contains(componentClass));
                     }
+
+                    @Override
+                    public boolean test(Class<?> input){
+                        return apply(input);
+                    }
                 }
         ));
         classes.addAll(resourceClasses);
@@ -990,6 +1000,11 @@ public final class ApplicationHandler implements ContainerLifecycleListener {
                                 RuntimeType.SERVER,
                                 !registeredClasses.contains(componentClass),
                                 resourceInstances.contains(component));
+                    }
+
+                    @Override
+                    public boolean test(Object input){
+                        return apply(input);
                     }
                 }
         ));

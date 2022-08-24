@@ -54,7 +54,7 @@
     <groupId>org.glassfish.jersey</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>2.25.1.payara-p7</version>
+    <version>2.25.1.payara-p9-SNAPSHOT</version>
     <name>jersey</name>
     <description>
         Jersey is the open source (under dual CDDL+GPL license) JAX-RS 2.0 (JSR 339)
@@ -559,7 +559,7 @@
                 <plugin>
                     <groupId>org.apache.felix</groupId>
                     <artifactId>maven-bundle-plugin</artifactId>
-                    <version>2.3.7</version>
+                    <version>2.4.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>
@@ -632,7 +632,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>2.2</version>
+                    <version>3.3.0</version>
                     <executions>
                         <execution>
                             <id>shade-archive</id>
@@ -1390,6 +1390,12 @@
             </dependency>
 
             <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>failureaccess</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.glassfish.hk2</groupId>
                 <artifactId>hk2-bom</artifactId>
                 <version>${hk2.version}</version>
@@ -1933,7 +1939,7 @@
         <gae.version>1.8.4</gae.version>
         <grizzly.client.version>1.11</grizzly.client.version>
         <grizzly2.version>2.3.28</grizzly2.version>
-        <guava.version>18.0</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <hamcrest.version>1.3</hamcrest.version>
         <xmlunit.version>1.6</xmlunit.version>
         <hk2.version>2.5.0-b32</hk2.version>
@@ -1963,7 +1969,7 @@
         <jetty.version>9.2.14.v20151106</jetty.version>
         <jetty.servlet.api.25.version>6.1.14</jetty.servlet.api.25.version>
         <jmh.version>1.10.2</jmh.version>
-        <jmockit.version>1.18</jmockit.version>
+        <jmockit.version>1.41</jmockit.version>
         <jsonp.ri.version>1.0.4</jsonp.ri.version>
         <jsonp.jaxrs.version>1.0</jsonp.jaxrs.version>
         <jsonp.api.version>1.0</jsonp.api.version>

@@ -112,6 +112,11 @@ public class ComponentBag {
             }
             return contracts.size() > count;
         }
+
+        @Override
+        public boolean test(ContractProvider model){
+            return apply(model);
+        }
     };
 
     /**
@@ -126,6 +131,11 @@ public class ComponentBag {
         public boolean apply(ContractProvider model) {
             return model.getContracts().contains(Binder.class);
         }
+
+        @Override
+        public boolean test(ContractProvider model){
+            return apply(model);
+        }
     };
 
     /**
@@ -139,6 +149,11 @@ public class ComponentBag {
         @Override
         public boolean apply(ContractProvider model) {
             return !model.getContracts().isEmpty();
+        }
+
+        @Override
+        public boolean test(ContractProvider model){
+            return apply(model);
         }
     };
 
@@ -543,6 +558,11 @@ public class ComponentBag {
                 final ContractProvider model = getModel(input);
                 return filter.apply(model);
             }
+
+            @Override
+            public boolean test(Class<?> input){
+                return apply(input);
+            }
         });
     }
 
@@ -561,6 +581,11 @@ public class ComponentBag {
             public boolean apply(Object input) {
                 final ContractProvider model = getModel(input.getClass());
                 return filter.apply(model);
+            }
+
+            @Override
+            public boolean test(Object input){
+                return apply(input);
             }
         });
     }

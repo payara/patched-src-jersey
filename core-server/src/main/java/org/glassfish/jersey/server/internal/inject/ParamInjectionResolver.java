@@ -88,6 +88,11 @@ public abstract class ParamInjectionResolver<A extends Annotation> implements In
             public boolean apply(ValueFactoryProvider input) {
                 return valueFactoryProviderClass.isInstance(input);
             }
+
+            @Override
+            public boolean test(ValueFactoryProvider input){
+                return apply(input);
+            }
         };
     }
 

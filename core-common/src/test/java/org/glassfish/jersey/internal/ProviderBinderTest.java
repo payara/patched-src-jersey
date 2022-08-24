@@ -205,6 +205,11 @@ public class ProviderBinderTest {
             public boolean apply(Object input) {
                 return input.getClass() == c;
             }
+
+            @Override
+            public boolean test(Object input){
+                return apply(input);
+            }
         }), new Function<Object, T>() {
 
             @Override
@@ -212,6 +217,7 @@ public class ProviderBinderTest {
                 return c.cast(input);
             }
         });
+
     }
 
 

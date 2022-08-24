@@ -290,7 +290,7 @@ public class HttpUrlConnector implements Connector {
 
     @Override
     public Future<?> apply(final ClientRequest request, final AsyncConnectorCallback callback) {
-        return MoreExecutors.sameThreadExecutor().submit(new Runnable() {
+        return MoreExecutors.newDirectExecutorService().submit(new Runnable() {
             @Override
             public void run() {
                 try {

@@ -140,6 +140,11 @@ final class WebTargetValueFactoryProvider extends AbstractValueFactoryProvider {
                         public boolean apply(Annotation input) {
                             return input != null && input.annotationType().getAnnotation(ClientBinding.class) != null;
                         }
+
+                        @Override
+                        public boolean test(Annotation input){
+                            return apply(input);
+                        }
                     });
 
             if (filtered.isEmpty()) {
@@ -376,6 +381,11 @@ final class WebTargetValueFactoryProvider extends AbstractValueFactoryProvider {
                                             @Override
                                             public boolean apply(String property) {
                                                 return property.startsWith(propertyPrefix);
+                                            }
+
+                                            @Override
+                                            public boolean test(String input){
+                                                return apply(input);
                                             }
                                         });
 

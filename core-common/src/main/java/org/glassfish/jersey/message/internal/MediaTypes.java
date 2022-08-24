@@ -161,6 +161,11 @@ public final class MediaTypes {
             return !Quality.QUALITY_SOURCE_PARAMETER_NAME.equals(input)
                     && !Quality.QUALITY_PARAMETER_NAME.equals(input);
         }
+
+        @Override
+        public boolean test(String input){
+            return apply(input);
+        }
     };
 
     /**

@@ -719,6 +719,11 @@ public class WebComponent {
                 return !params.remove(name + "=" + input)
                         && !params.remove(name + "[]=" + input);
             }
+
+            @Override
+            public boolean test(String input){
+                return apply(input);
+            }
         }));
     }
 
