@@ -433,16 +433,16 @@ Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
     [INFO] --- maven-dependency-plugin:2.8:copy-dependencies (copy-dependencies) @ simple-heroku-webapp ---
     [INFO] Copying jakarta.validation-api-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jakarta.validation-api-3.0.0.jar
     [INFO] Copying javassist-3.25.0-GA.jar to ../simple-heroku-webapp/target/dependency/javassist-3.25.0-GA.jar
-    [INFO] Copying jersey-client-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-client-3.1.0-M7.payara-p1.jar
-    [INFO] Copying jersey-hk2-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-hk2-3.1.0-M7.payara-p1.jar
+    [INFO] Copying jersey-client-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-client-3.1.0-M7.payara-p1-SNAPSHOT.jar
+    [INFO] Copying jersey-hk2-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-hk2-3.1.0-M7.payara-p1-SNAPSHOT.jar
     [INFO] Copying jetty-util-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-util-11.0.0.beta3.jar
     [INFO] Copying jakarta.annotation-api-2.0.0.jar to ../simple-heroku-webapp/target/dependency/jakarta.annotation-api-2.0.0.jar
-    [INFO] Copying jersey-common-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-common-3.1.0-M7.payara-p1.jar
-    [INFO] Copying jersey-container-servlet-core-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-container-servlet-core-3.1.0-M7.payara-p1.jar
+    [INFO] Copying jersey-common-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-common-3.1.0-M7.payara-p1-SNAPSHOT.jar
+    [INFO] Copying jersey-container-servlet-core-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-container-servlet-core-3.1.0-M7.payara-p1-SNAPSHOT.jar
     [INFO] Copying jakarta.activation-2.0.0.jar to ../simple-heroku-webapp/target/dependency/jakarta.activation-2.0.0.jar
     [INFO] Copying jetty-webapp-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-webapp-11.0.0.beta3.jar
     [INFO] Copying osgi-resource-locator-1.0.3.jar to ../simple-heroku-webapp/target/dependency/osgi-resource-locator-1.0.3.jar
-    [INFO] Copying jersey-container-servlet-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-container-servlet-3.1.0-M7.payara-p1.jar
+    [INFO] Copying jersey-container-servlet-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-container-servlet-3.1.0-M7.payara-p1-SNAPSHOT.jar
     [INFO] Copying jetty-io-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-io-11.0.0.beta3.jar
     [INFO] Copying slf4j-api-2.0.0-alpha1.jar to ../simple-heroku-webapp/target/dependency/slf4j-api-2.0.0-alpha1.jar
     [INFO] Copying jetty-server-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-server-11.0.0.beta3.jar
@@ -454,7 +454,7 @@ Tests run: 0, Failures: 0, Errors: 0, Skipped: 0
     [INFO] Copying hk2-api-3.0.0-RC1.jar to ../simple-heroku-webapp/target/dependency/hk2-api-3.0.0-RC1.jar
     [INFO] Copying jetty-security-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-security-11.0.0.beta3.jar
     [INFO] Copying jetty-http-11.0.0.beta3.jar to ../simple-heroku-webapp/target/dependency/jetty-http-11.0.0.beta3.jar
-    [INFO] Copying jersey-server-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-server-3.1.0-M7.payara-p1.jar
+    [INFO] Copying jersey-server-3.0.0.jar to ../simple-heroku-webapp/target/dependency/jersey-server-3.1.0-M7.payara-p1-SNAPSHOT.jar
     [INFO] Copying jakarta.inject-api-2.0.0.jar to ../simple-heroku-webapp/target/dependency/jakarta.inject-api-2.0.0.jar
     [INFO] Copying jetty-jakarta-servlet-api-5.0.1.jar to ../simple-heroku-webapp/target/dependency/jetty-jakarta-servlet-api-5.0.1.jar
     [INFO] Copying aopalliance-repackaged-3.0.0-RC1.jar to ../simple-heroku-webapp/target/dependency/aopalliance-repackaged-3.0.0-RC1.jar
