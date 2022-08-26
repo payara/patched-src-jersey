@@ -201,7 +201,8 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
                             //Singleton annotation to indicate Singleton scope instead of Request
                             Optional<Annotation> optAnnotation =
                                     Arrays.stream(injectee.getInjecteeClass().getAnnotations())
-                                            .filter(p -> p.annotationType().getName().contains("Singleton")).findFirst();
+                                            .filter(p -> p.annotationType().getName().equals("jakarta.ejb.Singleton"))
+                                            .findFirst();
                             AbstractActiveDescriptor<Object> descriptor = null;
                             if (optAnnotation.isPresent()) {
                                 descriptor = BuilderHelper.activeLink(clazz)
@@ -209,7 +210,7 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
                                         .in(Singleton.class)
                                         .build();
                             } else {
-                                BuilderHelper.activeLink(clazz)
+                                descriptor = BuilderHelper.activeLink(clazz)
                                         .to(clazz)
                                         .in(RequestScoped.class)
                                         .build();
