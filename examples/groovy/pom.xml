@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.3</version>
+            <version>2.4.7</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.test-framework.providers</groupId>
@@ -107,7 +107,7 @@
                         <configuration>
                             <target>
                                 <jar destfile="${project.build.directory}/${project.artifactId}-javadoc.jar">
-                                    <zipfileset dir="${project.build.directory}/gapidocs" />
+                                    <zipfileset dir="${project.build.directory}/gapidocs"/>
                                 </jar>
                             </target>
                         </configuration>
