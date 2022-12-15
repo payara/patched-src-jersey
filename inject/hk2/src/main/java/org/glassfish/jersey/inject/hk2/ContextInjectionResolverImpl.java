@@ -14,6 +14,9 @@
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
 
+// Copyright (c) 2017, 2020 Oracle and/or its affiliates. All rights reserved.
+// Copyright (c) 2022 Payara Foundation and/or its affiliates
+
 package org.glassfish.jersey.inject.hk2;
 
 import java.lang.annotation.Annotation;
@@ -196,7 +199,7 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
                     if (foreignRequestScopedComponents.get().contains(f.getDeclaringClass())) {
                         final Class<?> clazz = f.getType();
                         if (serviceLocator.getServiceHandle(clazz).getActiveDescriptor().getScopeAnnotation()
-                                == RequestScoped.class) {
+                                                                                            == RequestScoped.class) {
                             //to fix proxy issue from Singletons was needed to review if the injecteeClass contains
                             //Singleton annotation to indicate Singleton scope instead of Request
                             Optional<Annotation> optAnnotation =
