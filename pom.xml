@@ -2268,7 +2268,7 @@
         <!-- end of versions extracted here due to maven-enforcer-plugin -->
 
         <!-- microprofile -->
-        <microprofile.config.version>3.0</microprofile.config.version>
+        <microprofile.config.version>3.0.2</microprofile.config.version>
         <microprofile.rest.client.version>3.0.1</microprofile.rest.client.version>
         <helidon.config.version>3.0.2</helidon.config.version>
         <smallrye.config.version>3.0.0</smallrye.config.version>
