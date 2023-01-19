@@ -2177,7 +2177,7 @@
 
         <!-- microprofile -->
         <microprofile.config.version>3.0.2</microprofile.config.version>
-        <microprofile.rest.client.version>3.0</microprofile.rest.client.version>
+        <microprofile.rest.client.version>3.0.1</microprofile.rest.client.version>
         <helidon.config.version>3.0.0-M1</helidon.config.version>
         <smallrye.config.version>3.0.0-RC1</smallrye.config.version>
 
