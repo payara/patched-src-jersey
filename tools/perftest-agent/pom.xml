@@ -41,7 +41,7 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>3.1.0.payara-p1</version>
+            <version>3.1.0.payara-p2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
