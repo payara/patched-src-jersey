@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.glassfish.jersey.tests.integration.cdi</groupId>
         <artifactId>cdi-integration-project</artifactId>
-        <version>3.1.0-M8.payara-p1</version>
+        <version>3.1.1.payara-p1</version>
     </parent>
 
     <artifactId>context-inject-on-server</artifactId>
