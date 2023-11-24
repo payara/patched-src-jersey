@@ -29,7 +29,7 @@
     <groupId>org.glassfish.jersey</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>3.1.3.payara-p1-SNAPSHOT</version>
+    <version>3.1.3.payara-p2-SNAPSHOT</version>
     <name>jersey</name>
     <description>
         Eclipse Jersey is the open source (under dual EPL+GPL license) Jakarta RESTful WebServices 3.0
@@ -700,6 +700,7 @@
                             <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
                             <_nodefaultversion>false</_nodefaultversion>
                             <Include-Resource>{maven-resources},${project.build.directory}/legal</Include-Resource>
+                            <_noimportjava>true</_noimportjava>
                         </instructions>
                     </configuration>
                     <executions>
@@ -2268,7 +2269,7 @@
         <!-- end of versions extracted here due to maven-enforcer-plugin -->
 
         <!-- microprofile -->
-        <microprofile.config.version>3.0</microprofile.config.version>
+        <microprofile.config.version>3.0.2</microprofile.config.version>
         <microprofile.rest.client.version>3.0.1</microprofile.rest.client.version>
         <helidon.config.version>3.0.2</helidon.config.version>
         <smallrye.config.version>3.0.0</smallrye.config.version>
