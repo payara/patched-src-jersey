@@ -13,6 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
+// Portions Copyright 2022 [Payara Foundation and/or its affiliates]
 
 package org.glassfish.jersey.tests.e2e.common;
 
@@ -285,7 +286,7 @@ public class NonPublicNonStaticTest {
 
         @Override
         public ResourceConfig configure() {
-            set(TestProperties.RECORD_LOG_LEVEL, Level.WARNING.intValue());
+            set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
             return new ResourceConfig(NonStaticResource.class);
         }
 
@@ -391,7 +392,7 @@ public class NonPublicNonStaticTest {
 
         @Override
         public ResourceConfig configure() {
-            set(TestProperties.RECORD_LOG_LEVEL, Level.WARNING.intValue());
+            set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
             return new ResourceConfig(InterfaceResource.class);
         }
 
