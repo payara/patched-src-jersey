@@ -22,7 +22,7 @@
     <parent>
         <artifactId>microprofile-integration-project</artifactId>
         <groupId>org.glassfish.jersey.tests.integration.microprofile</groupId>
-        <version>3.1.5.payara-p8</version>
+        <version>3.1.5.payara-p9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
