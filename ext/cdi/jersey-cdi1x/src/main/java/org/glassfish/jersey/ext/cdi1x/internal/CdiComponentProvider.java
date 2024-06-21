@@ -42,11 +42,11 @@ import java.util.logging.Logger;
 import jakarta.enterprise.inject.Vetoed;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.core.Application;
 
 
-import jakarta.annotation.ManagedBean;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -201,10 +201,10 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
         }
 
         final boolean isCdiManaged = isCdiComponent(clazz);
-        final boolean isManagedBean = isManagedBean(clazz);
+        final boolean isNamedBean = isNamedBean(clazz);
         final boolean isJaxRsComponent = isJaxRsComponentType(clazz);
 
-        if (!isCdiManaged && !isManagedBean && !isJaxRsComponent) {
+        if (!isCdiManaged && !isNamedBean && !isJaxRsComponent) {
             return false;
         }
 
@@ -270,8 +270,8 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
         return !beanManager.getBeans(component, qualifiers).isEmpty();
     }
 
-    private boolean isManagedBean(final Class<?> component) {
-        return component.isAnnotationPresent(ManagedBean.class);
+    private boolean isNamedBean(final Class<?> component) {
+        return component.isAnnotationPresent(Named.class);
     }
 
     private AnnotatedConstructor<?> enrichedConstructor(final AnnotatedConstructor<?> ctor) {
