@@ -13,6 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
+// Portions Copyright 2022 [Payara Foundation and/or its affiliates]
 
 package org.glassfish.jersey.internal.inject;
 
@@ -293,9 +294,10 @@ public final class Providers {
     public static <T> Collection<ServiceHolder<T>> getAllServiceHolders(InjectionManager injectionManager, Class<T> contract) {
         List<ServiceHolder<T>> providers = getServiceHolders(injectionManager,
                                                              contract,
-                                                             Comparator.comparingInt(Providers::getPriority),
                                                              CustomAnnotationLiteral.INSTANCE);
         providers.addAll(getServiceHolders(injectionManager, contract));
+        providers.sort((o1, o2) -> Comparator.comparingInt(Providers::getPriority).compare(
+                o1.getInstance().getClass(), o2.getInstance().getClass()));
 
         final LinkedHashMap<Class<T>, ServiceHolder<T>> providerMap = new LinkedHashMap<>();
 
