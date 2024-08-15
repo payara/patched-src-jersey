@@ -58,6 +58,7 @@ public class JsonMoxyTest extends AbstractJsonOsgiIntegrationTest {
                 mavenBundle().groupId("org.eclipse.persistence").artifactId("org.eclipse.persistence.core").versionAsInProject(),
                 mavenBundle().groupId("org.eclipse.persistence").artifactId("org.eclipse.persistence.asm").versionAsInProject(),
                 mavenBundle().groupId("org.eclipse.parsson").artifactId("parsson").versionAsInProject(),
+                mavenBundle().groupId("jakarta.json").artifactId("jakarta.json-api").versionAsInProject(),
 
                 // validation
                 mavenBundle().groupId("org.hibernate.validator").artifactId("hibernate-validator").versionAsInProject(),
