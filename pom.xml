@@ -447,7 +447,7 @@
                             <exclude>bundles/**</exclude>
                             <fileExclude>module-info.java</fileExclude>
                         </sourceFileExcludes>
-                        <verbose />
+                        <verbose/>
                         <additionalparam>-Xdoclint:none</additionalparam>
                         <maxmemory>256m</maxmemory>
                     </configuration>
@@ -998,7 +998,7 @@
         <profile>
             <id>securityOff</id>
             <properties>
-                <surefire.security.argline />
+                <surefire.security.argline/>
             </properties>
         </profile>
         <profile>
@@ -1927,7 +1927,7 @@
         <findbugs.threshold>Low</findbugs.threshold>
         <!-- the exclude file cannot be here directly, as FindBugs would interpret the path as relative to
         each module; the default exclude filter file is at etc/config/findbugs-exclude.xml -->
-        <findbugs.exclude />
+        <findbugs.exclude/>
         <findbugs.glassfish.logging.validLoggerPrefixes>
             javax.enterprise
         </findbugs.glassfish.logging.validLoggerPrefixes>
@@ -1940,11 +1940,11 @@
         <release.tests.args>-Dmaven.test.skip=false</release.tests.args>
         <release.preparationGoals>clean install</release.preparationGoals>
         <skip.tests>false</skip.tests>
-        <xdk.absolute.path />
-        <surefire.security.argline />
-        <surefire.coverage.argline />
+        <xdk.absolute.path/>
+        <surefire.security.argline/>
+        <surefire.coverage.argline/>
         <surefire.maxmem.argline>1024</surefire.maxmem.argline>
-        <failsafe.coverage.argline />
+        <failsafe.coverage.argline/>
         <server.coverage.argline>${failsafe.coverage.argline}</server.coverage.argline>
 
 
@@ -1993,7 +1993,7 @@
         <jersey1.last.final.version>${jersey1.version}</jersey1.last.final.version>
         <jettison.version>1.3.7</jettison.version> <!-- TODO: 1.3.8 doesn't work; AbstractJsonTest complexBeanWithAttributes -->
         <jetty.plugin.version>6.1.26</jetty.plugin.version>
-        <jetty.version>9.4.12.v20180830</jetty.version>
+        <jetty.version>9.4.56.v20240826</jetty.version>
         <jetty.servlet.api.25.version>6.1.14</jetty.servlet.api.25.version>
         <jmh.version>1.10.2</jmh.version>
         <jmockit.version>1.41</jmockit.version>
