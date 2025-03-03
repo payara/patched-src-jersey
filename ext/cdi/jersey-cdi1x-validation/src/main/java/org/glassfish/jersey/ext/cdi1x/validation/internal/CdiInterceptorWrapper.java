@@ -27,8 +27,8 @@ import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 
-import org.hibernate.validator.cdi.internal.interceptor.MethodValidated;
-import org.hibernate.validator.cdi.internal.interceptor.ValidationInterceptor;
+import org.hibernate.validator.cdi.interceptor.internal.MethodValidated;
+import org.hibernate.validator.cdi.interceptor.spi.ValidationInterceptor;
 
 /**
  * JAX-RS wrapper for Hibernate CDI bean validation interceptor.

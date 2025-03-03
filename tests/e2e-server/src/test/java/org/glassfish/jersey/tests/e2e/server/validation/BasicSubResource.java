@@ -24,11 +24,11 @@ import jakarta.ws.rs.container.ResourceContext;
 import jakarta.ws.rs.core.Context;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.executable.ExecutableType;
 import jakarta.validation.executable.ValidateOnExecution;
 
-import org.hibernate.validator.constraints.Email;
 
 /**
  * @author Michal Gajdos

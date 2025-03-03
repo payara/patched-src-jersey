@@ -45,7 +45,7 @@ import org.glassfish.jersey.ext.cdi1x.internal.JerseyVetoed;
 import org.glassfish.jersey.internal.util.collection.Cache;
 import org.glassfish.jersey.server.model.Resource;
 
-import org.hibernate.validator.cdi.internal.interceptor.ValidationInterceptor;
+import org.hibernate.validator.cdi.interceptor.spi.ValidationInterceptor;
 
 /**
  * CDI extension to register {@link CdiInterceptorWrapper}.

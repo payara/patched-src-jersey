@@ -16,7 +16,7 @@
 
 package org.glassfish.jersey.tests.integration.jersey2673;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * @author Michal Gajdos
