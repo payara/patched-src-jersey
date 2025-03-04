@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.glassfish.jersey.tests.osgi</groupId>
         <artifactId>project</artifactId>
-        <version>4.0.0-M2</version>
+        <version>4.0.0-M2.payara-p1</version>
     </parent>
 
     <artifactId>jersey-tests-osgi-functional</artifactId>
@@ -230,6 +230,12 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-moxy</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.asm</artifactId>
+            <version>9.7.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

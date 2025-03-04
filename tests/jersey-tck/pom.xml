@@ -22,7 +22,7 @@
 
     <groupId>org.glassfish.jersey.core</groupId>
     <artifactId>jersey-tck</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.0-M2.payara-p1</version>
     <packaging>jar</packaging>
 
     <name>Jakarta RESTful WS Compliance for Jersey</name>
