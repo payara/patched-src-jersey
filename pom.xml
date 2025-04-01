@@ -225,6 +225,138 @@
         <url>https://www.eclipse.org/org/foundation/</url>
     </organization>
 
+    <repositories>
+        <!-- Try Maven central first, not last, which happens when omitted here -->
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ossrh-snapshots</id>
+            <name>Sonatype OSSRH Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-artifacts</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-enterprise-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-enterprise-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <!-- Try Maven central first, not last, which happens when omitted here -->
+        <pluginRepository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>ossrh-snapshots</id>
+            <name>Sonatype OSSRH Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-artifacts</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-enterprise-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-enterprise-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -1388,6 +1520,66 @@
                                     <failWhenReviewNeeded>true</failWhenReviewNeeded>
                                     <reviewSummary>REVIEW_SUMMARY</reviewSummary>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>patched-project-release</id>
+            <distributionManagement>
+                <repository>
+                    <id>payara-nexus-enterprise-artifacts</id>
+                    <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>payara-nexus-enterprise-snapshots</id>
+                    <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private/</url>
+                </snapshotRepository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
