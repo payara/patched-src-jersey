@@ -103,13 +103,10 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
      * Name to be used when binding CDI injectee skipping class analyzer to HK2 service injection manager.
      */
     public static final String CDI_CLASS_ANALYZER = "CdiInjecteeSkippingClassAnalyzer";
-    
-    private static final boolean JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION = 
+    private static final boolean JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION =
             Boolean.parseBoolean(System.getProperty("jersey.config.analyzerReattemptInjection", "false"));
-    
-    private static final int JERSEY_CLASS_ANALYZER_REATTEMPT_TIMEOUT = 
+    private static final int JERSEY_CLASS_ANALYZER_REATTEMPT_TIMEOUT =
             Integer.parseInt(System.getProperty("jersey.config.analyzerReattemptTimeout", "1000"));
-
     private static final CdiComponentProviderRuntimeSpecifics runtimeSpecifics =
             CdiUtil.IS_SERVER_AVAILABLE
             ? new CdiComponentProviderServerRuntimeSpecifics()
@@ -915,4 +912,3 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
         }
     }
 }
-
