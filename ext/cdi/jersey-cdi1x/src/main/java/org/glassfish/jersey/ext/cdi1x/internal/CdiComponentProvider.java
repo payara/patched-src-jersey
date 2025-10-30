@@ -105,8 +105,8 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
     public static final String CDI_CLASS_ANALYZER = "CdiInjecteeSkippingClassAnalyzer";
     private static final boolean JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION =
             Boolean.parseBoolean(System.getProperty("jersey.config.analyzerReattemptInjection", "false"));
-    private static final int JERSEY_CLASS_ANALYZER_REATTEMPT_TIMEOUT =
-            Integer.parseInt(System.getProperty("jersey.config.analyzerReattemptTimeout", "1000"));
+    private static final int JERSEY_CLASS_ANALYZER_REATTEMPT_WAIT =
+            Integer.parseInt(System.getProperty("jersey.config.analyzerReattemptWait", "1000"));
     private static final CdiComponentProviderRuntimeSpecifics runtimeSpecifics =
             CdiUtil.IS_SERVER_AVAILABLE
             ? new CdiComponentProviderServerRuntimeSpecifics()
@@ -681,10 +681,11 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
                 if (injectingManager != null) {
                     injectingManager.inject(t, CdiComponentProvider.CDI_CLASS_ANALYZER);
                 }
-            } catch (IllegalStateException e) {
-                if (JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION && e.getMessage().contains("ClassAnalyzer")) {
+            } catch (Exception e) {
+                if (JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION
+                        && e.getMessage().contains(CdiComponentProvider.CDI_CLASS_ANALYZER)) {
                     try {
-                        Thread.sleep(JERSEY_CLASS_ANALYZER_REATTEMPT_TIMEOUT);
+                        Thread.sleep(JERSEY_CLASS_ANALYZER_REATTEMPT_WAIT);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -693,7 +694,6 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
                     throw e;
                 }
             }
-
             threadInjectionManagers.remove();
         }
 
