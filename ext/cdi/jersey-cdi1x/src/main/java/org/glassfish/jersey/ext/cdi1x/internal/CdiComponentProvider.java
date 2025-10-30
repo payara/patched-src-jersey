@@ -681,8 +681,8 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
                 if (injectingManager != null) {
                     injectingManager.inject(t, CdiComponentProvider.CDI_CLASS_ANALYZER);
                 }
-            } catch (Exception e) {
-                if (JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION) {
+            } catch (IllegalStateException e) {
+                if (JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION && e.getMessage().contains("ClassAnalyzer")) {
                     try {
                         Thread.sleep(JERSEY_CLASS_ANALYZER_REATTEMPT_TIMEOUT);
                     } catch (InterruptedException ex) {
