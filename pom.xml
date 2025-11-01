@@ -2349,7 +2349,7 @@
         <gf.impl.version>5.1.0</gf.impl.version>
         <grizzly.client.version>1.16</grizzly.client.version>
         <grizzly2.version>2.4.4</grizzly2.version>
-        <hk2.version>2.6.1</hk2.version>
+        <hk2.version>2.6.1.payara-p12-SNAPSHOT</hk2.version>
         <hk2.osgi.version>org.glassfish.hk2.*;version="[2.5,4)"</hk2.osgi.version>
         <hk2.jvnet.osgi.version>org.jvnet.hk2.*;version="[2.5,4)"</hk2.jvnet.osgi.version>
         <hk2.config.version>5.1.0</hk2.config.version>
