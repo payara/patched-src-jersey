@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.glassfish.jersey.tests</groupId>
         <artifactId>project</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.0.payara-p1-SNAPSHOT</version>
     </parent>
 
     <artifactId>stress</artifactId>
