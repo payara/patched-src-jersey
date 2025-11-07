@@ -41,7 +41,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class GsonCustomTest extends JerseyTest {
-    
+
     @Path("/test")
     public static class Resource {
 
