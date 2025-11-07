@@ -2294,9 +2294,9 @@
         <jakarta.activation-api.version>2.1.3</jakarta.activation-api.version>
         <jakarta.activation.version>2.0.2</jakarta.activation.version>
         <!-- org.hibernate.validator has lookup limitation up to the 6 version of EL API-->
+        <jakarta.el.version>5.0.1</jakarta.el.version> <!-- el6 does not work with OSGi with expressly 5 -->
         <!-- org.hibernate.validator has lookup limitation up to the 6 version of EL IMPL -->
-        <jakarta.el.version>6.0.1</jakarta.el.version>
-        <jakarta.el.impl.version>6.0.0-M2</jakarta.el.impl.version>
+        <jakarta.el.impl.version>5.0.0</jakarta.el.impl.version> <!-- EE11 expressly 6 does not work with EE10 BV 8.0.1 (OSGi) -->
         <jakarta.annotation.osgi.version>jakarta.annotation.*;version="[3.0,4)"</jakarta.annotation.osgi.version>
         <jakarta.annotation.version>3.0.0</jakarta.annotation.version>
         <jakarta.decorator.osgi.version>jakarta.decorator.*;version="[4.0,5)"</jakarta.decorator.osgi.version> <!-- CDI -->
