@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.glassfish.jersey.tests.integration</groupId>
         <artifactId>project</artifactId>
-        <version>4.0.0.payara-p1-SNAPSHOT</version>
+        <version>4.0.0.payara-p2-SNAPSHOT</version>
     </parent>
 
     <artifactId>sonar-test</artifactId>
