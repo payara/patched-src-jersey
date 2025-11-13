@@ -29,7 +29,7 @@
     <groupId>org.glassfish.jersey</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>2.47.payara-p2-SNAPSHOT</version>
+    <version>2.47.payara-p3-SNAPSHOT</version>
     <name>jersey</name>
     <description>
         Eclipse Jersey is the open source (under dual EPL+GPL license) JAX-RS 2.1 (JSR 370)
@@ -224,6 +224,138 @@
         <name>Eclipse Foundation</name>
         <url>https://www.eclipse.org/org/foundation/</url>
     </organization>
+
+    <repositories>
+        <!-- Try Maven central first, not last, which happens when omitted here -->
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>ossrh-snapshots</id>
+            <name>Sonatype OSSRH Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-artifacts</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-enterprise-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>payara-nexus-enterprise-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <!-- Try Maven central first, not last, which happens when omitted here -->
+        <pluginRepository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>ossrh-snapshots</id>
+            <name>Sonatype OSSRH Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-artifacts</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-enterprise-artifacts</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>payara-nexus-enterprise-snapshots</id>
+            <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <pluginManagement>
@@ -1398,12 +1530,12 @@
             <id>patched-project-release</id>
             <distributionManagement>
                 <repository>
-                    <id>payara-nexus-artifacts</id>
-                    <url>https://nexus.dev.payara.fish/repository/payara-artifacts/</url>
+                    <id>payara-nexus-enterprise-artifacts</id>
+                    <url>https://nexus.dev.payara.fish/repository/payara-enterprise-artifacts-private/</url>
                 </repository>
                 <snapshotRepository>
-                    <id>payara-nexus-snapshots</id>
-                    <url>https://nexus.dev.payara.fish/repository/payara-snapshots/</url>
+                    <id>payara-nexus-enterprise-snapshots</id>
+                    <url>https://nexus.dev.payara.fish/repository/payara-enterprise-snapshots-private/</url>
                 </snapshotRepository>
             </distributionManagement>
             <build>
@@ -2349,7 +2481,7 @@
         <gf.impl.version>5.1.0</gf.impl.version>
         <grizzly.client.version>1.16</grizzly.client.version>
         <grizzly2.version>2.4.4</grizzly2.version>
-        <hk2.version>2.6.1</hk2.version>
+        <hk2.version>2.6.1.payara-p12</hk2.version>
         <hk2.osgi.version>org.glassfish.hk2.*;version="[2.5,4)"</hk2.osgi.version>
         <hk2.jvnet.osgi.version>org.jvnet.hk2.*;version="[2.5,4)"</hk2.jvnet.osgi.version>
         <hk2.config.version>5.1.0</hk2.config.version>
