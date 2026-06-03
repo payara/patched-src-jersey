@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.glassfish.jersey.ext</groupId>
         <artifactId>project</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.2.payara-p1-SNAPSHOT</version>
     </parent>
 
     <artifactId>jersey-entity-filtering</artifactId>
