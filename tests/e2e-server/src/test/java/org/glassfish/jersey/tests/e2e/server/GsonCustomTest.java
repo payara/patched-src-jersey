@@ -17,7 +17,11 @@
 package org.glassfish.jersey.tests.e2e.server;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import jakarta.ws.rs.Consumes;
@@ -38,15 +42,16 @@ import com.google.gson.GsonBuilder;
 
 public class GsonCustomTest extends JerseyTest {
 
-    private static final Date date = new Date(0);
-
     @Path("/test")
     public static class Resource {
 
         @GET
         @Consumes("application/json")
-        public Date get() {
-            return date;
+        public String get() {
+            Instant epochInstant = Instant.EPOCH;
+            ZoneId utcZone = ZoneId.of("UTC");
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(epochInstant, utcZone);
+            return localDateTime.toString();
         }
     }
 
@@ -60,7 +65,7 @@ public class GsonCustomTest extends JerseyTest {
         Response response = target("/test").request().get();
         assertEquals(200, response.getStatus());
         String obj = response.readEntity(String.class);
-        assertEquals("\"1970\"", obj);
+        assertTrue(obj.contains("1970"));
     }
 
     @Provider

@@ -104,6 +104,10 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
      */
     public static final String CDI_CLASS_ANALYZER = "CdiInjecteeSkippingClassAnalyzer";
 
+    private static final boolean JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION =
+            Boolean.parseBoolean(System.getProperty("jersey.config.analyzerReattemptInjection", "false"));
+    private static final int JERSEY_CLASS_ANALYZER_REATTEMPT_WAIT =
+            Integer.parseInt(System.getProperty("jersey.config.analyzerReattemptWait", "1000"));
     private static final CdiComponentProviderRuntimeSpecifics runtimeSpecifics =
             CdiUtil.IS_SERVER_AVAILABLE
             ? new CdiComponentProviderServerRuntimeSpecifics()
@@ -689,8 +693,22 @@ public class CdiComponentProvider implements ComponentProvider, Extension {
 
             delegate.inject(t, cc); // here the injection manager is used in HK2Bean
 
-            if (injectingManager != null) {
-                injectingManager.inject(t, CdiComponentProvider.CDI_CLASS_ANALYZER);
+            try {
+                if (injectingManager != null) {
+                    injectingManager.inject(t, CdiComponentProvider.CDI_CLASS_ANALYZER);
+                }
+            } catch (Exception e) {
+                if (JERSEY_CLASS_ANALYZER_REATTEMPT_INJECTION
+                        && e.getMessage().contains(CdiComponentProvider.CDI_CLASS_ANALYZER)) {
+                    try {
+                        Thread.sleep(JERSEY_CLASS_ANALYZER_REATTEMPT_WAIT);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    injectingManager.inject(t, CdiComponentProvider.CDI_CLASS_ANALYZER);
+                } else {
+                    throw e;
+                }
             }
 
             threadInjectionManagers.remove();
