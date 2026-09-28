@@ -13,14 +13,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
+// Portions Copyright 2022 [Payara Foundation and/or its affiliates]
 
 package org.glassfish.jersey.inject.hk2;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -193,12 +197,26 @@ public class ContextInjectionResolverImpl implements InjectionResolver<Context>,
                     if (foreignRequestScopedComponents.get().contains(f.getDeclaringClass())) {
                         final Class<?> clazz = f.getType();
                         if (serviceLocator.getServiceHandle(clazz).getActiveDescriptor().getScopeAnnotation()
-                                                                                            == RequestScoped.class) {
-                            final AbstractActiveDescriptor<Object> descriptor =
-                                    BuilderHelper.activeLink(clazz)
-                                            .to(clazz)
-                                            .in(RequestScoped.class)
-                                            .build();
+                                == RequestScoped.class) {
+                            //to fix proxy issue from Singletons was needed to review if the injecteeClass contains
+                            //Singleton annotation to indicate Singleton scope instead of Request
+                            Optional<Annotation> optAnnotation =
+                                    Arrays.stream(injectee.getInjecteeClass().getAnnotations())
+                                            .filter(p -> p.annotationType().getName().equals("javax.ejb.Singleton"))
+                                            .findFirst();
+                            AbstractActiveDescriptor<Object> descriptor = null;
+                            if (optAnnotation.isPresent()) {
+                                descriptor = BuilderHelper.activeLink(clazz)
+                                        .to(clazz)
+                                        .in(Singleton.class)
+                                        .build();
+                            } else {
+                                descriptor = BuilderHelper.activeLink(clazz)
+                                        .to(clazz)
+                                        .in(RequestScoped.class)
+                                        .build();
+                            }
+
                             return new DescriptorOverridingInjectee(injectee, descriptor);
                         }
                     }

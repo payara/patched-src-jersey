@@ -13,6 +13,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  */
+// Portions Copyright 2022 [Payara Foundation and/or its affiliates]
 
 package org.glassfish.jersey.server;
 
@@ -22,6 +23,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -153,7 +155,8 @@ public class ResourceModelConfigurator implements BootstrapConfigurator {
 
             if (resourceClasses.contains(componentClass)) {
                 if (!Resource.isAcceptable(componentClass)) {
-                    LOGGER.warning(LocalizationMessages.NON_INSTANTIABLE_COMPONENT(componentClass));
+                    LOGGER.log(componentClass.isInterface() ? Level.FINE : Level.WARNING,
+                            LocalizationMessages.NON_INSTANTIABLE_COMPONENT(componentClass));
                     continue;
                 }
 
